@@ -76,6 +76,10 @@
 	    border-radius: 50%;
 	    background: white;
     }
+
+    ::-webkit-scrollbar { 
+        display: none; 
+    }
 </style>
 <div class="container-fluid" style="height:700px">
     <div class="row" style="height:100%;">
@@ -106,7 +110,7 @@
                                         <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
                                     {% endif %}
                                     <p style="padding-left:15px;float:left;margin-top:10px;">{{post.profile.user.first_name}}&nbsp;{{post.profile.user.last_name}}</p>
-                                    <p style="padding-left:15px;float:left;margin-top:10px;">{{post.datePosted}}</p>
+                                    <p class="text-muted" style="padding-left:15px;float:left;margin-top:10px;">{{post.datePosted}}</p>
                                     <br />
                                     {% if post.picture %}
                                     <hr class="my-3" style="width:80%;" />
@@ -132,7 +136,7 @@
                                         <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
                                     {% endif %}
                                     <p style="padding-left:15px;float:left;margin-top:10px;">{{post.profile.user.first_name}}&nbsp;{{post.profile.user.last_name}}</p>
-                                    <p style="padding-left:15px;float:left;margin-top:10px;">{{post.datePosted}}</p>
+                                    <p class="text-muted" style="padding-left:15px;float:left;margin-top:10px;">{{post.datePosted}}</p>
                                     <br />
                                     {% if post.picture %}
                                     <hr class="my-3" style="width:80%;" />
@@ -157,7 +161,7 @@
                                     <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
                                 {% endif %}
                                 <p style="padding-left:15px;float:left;margin-top:10px;">{{post.profile.user.first_name}}&nbsp;{{post.profile.user.last_name}}</p>
-                                <p style="padding-left:15px;float:left;margin-top:10px;">{{post.datePosted}}</p>
+                                <p class="text-muted" style="padding-left:15px;float:left;margin-top:10px;">{{post.datePosted}}</p>
                                 <br />
                                 {% if post.picture %}
                                 <hr class="my-3" style="width:80%;" />
