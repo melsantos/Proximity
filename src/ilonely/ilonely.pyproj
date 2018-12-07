@@ -4,7 +4,7 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <Name>ilonely</Name>
     <RootNamespace>ilonely</RootNamespace>
-    <InterpreterId>Global|PythonCore|3.6</InterpreterId>
+    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
     <WebBrowserPort>8000</WebBrowserPort>
   </PropertyGroup>
   <PropertyGroup>
@@ -73,7 +73,6 @@
     <Folder Include="marketplace\" />
     <Folder Include="marketplace\migrations\" />
     <Folder Include="marketplace\static\" />
-    <Folder Include="marketplace\static\product_pictures\" />
     <Folder Include="marketplace\templates\" />
     <Folder Include="marketplace\templates\marketplace\" />
     <Folder Include="marketplace\__pycache__\" />
@@ -120,6 +119,9 @@
     <Folder Include="pages\static\leaflet\leaflet\images\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".env">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="db.sqlite3" />
     <Content Include="marketplace\templates\marketplace\listing.html" />
     <Content Include="marketplace\templates\marketplace\marketplace.html" />

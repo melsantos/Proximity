@@ -30,6 +30,7 @@ from instagram.client import InstagramAPI
 from io import BytesIO
 from pages.geo import getNearby, getNearbyEvents
 from pages.models import Profile, Follow, Block, Thread, Message, Post, Event
+from marketplace.models import Product
 from urllib.request import urlopen
 import json
 import os
@@ -488,6 +489,10 @@ def public_profile(request, userid):
     message_request = is_msg_request(User.objects.get(pk = request.user.id), User.objects.get(pk = userid))
     pending_approval = is_pending_approval(User.objects.get(pk = request.user.id), User.objects.get(pk = userid))
     messagable = is_messagable(User.objects.get(pk = request.user.id), User.objects.get(pk = userid))
+
+    user_posts = Post.objects.filter(profile=profile).order_by('-datePosted')
+    user_listings = Product.objects.filter(seller=profile).order_by('-date_created')
+    user_events = (Event.objects.filter(poster=profile) | Event.objects.filter(rsvp_list=profile)).order_by('-date')
     return render(request, 'pages/public_profile.html', 
                 {'title': (profile.user.first_name + ' ' + profile.user.last_name), 
                 'profile' : profile,
@@ -495,9 +500,11 @@ def public_profile(request, userid):
                 'blocking' : blocking,
                 'message_request' : message_request,
                 'pending_approval' : pending_approval,
-                'messagable': messagable,
-                }
-                  )
+                'messagable' : messagable,
+                'user_posts' : user_posts,
+                'user_listings' : user_listings,
+                'user_events' : user_events,
+                })
 
 @login_required(login_url="home")
 def my_profile(request):

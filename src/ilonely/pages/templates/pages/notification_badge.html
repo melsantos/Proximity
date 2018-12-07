@@ -1,13 +1,11 @@
 ﻿<!DOCTYPE html>
 
-<body>
-    {% if new_notifications > 0 %}
-        <span class="badge badge-danger" style="height:20px; vertical-align:middle; text-align:center; margin-left:-5px">
-            {% if new_notifications < 100 %}
-                <p style="text-align:center">{{new_notifications}}</p>
-            {% else %}
-                <p style="text-align:center">100+</p>
-            {% endif %}
-        </span>
-    {% endif %}
-</body>
+{% if new_notifications > 0 %}
+    <span class="badge badge-danger" style="height:20px; vertical-align:middle; text-align:center; margin-left:-5px">
+        {% if new_notifications < 100 %}
+            <p style="text-align:center">{{new_notifications}}</p>
+        {% else %}
+            <p style="text-align:center">100+</p>
+        {% endif %}
+    </span>
+{% endif %}

@@ -1,18 +1,200 @@
 ﻿{% extends "pages/base.html" %}
 
+{% block extrahead %}
+{% load static %}
+<style>
+::-webkit-scrollbar { 
+    display: none; 
+}
+.material-icons {
+    vertical-align: middle;
+}
+
+.productButton {
+    display: inline-block;
+    height: 240px;
+    width: 190px;
+    background-color: lightgray;
+    border-radius: 3px;
+    text-decoration: none;
+    box-shadow: 3px 3px 3px #cecece;
+    border: 1px solid lightgray;
+    margin:0.3em;
+    margin-bottom:1.3em;
+    
+/* Modified and taken from https://github.com/IanLunn/Hover */
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+}
+
+.productButton:hover {
+    -webkit-transform: translateY(-8px);
+    transform: translateY(-8px);
+}
+
+.productButton:active {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+}
+
+.productUpper {
+     width:100%; 
+     height: 70%; 
+     overflow:hidden; 
+     border-radius:3px 3px 0 0;
+     background-color:black;
+     display:flex; 
+     align-items:center;
+}
+
+.productLower {
+     width:100%; 
+     height: 30%; 
+     background-color:white; 
+     color:black;
+     border-radius: 0 0 3px 3px;
+}
+
+.priceTag {
+    z-index:10; 
+    position:absolute; 
+    background-color:rgba(0, 0, 0, 0.75);
+    color:white;
+    border-radius:5px;
+}
+
+.nobullet {
+    list-style-type: none;
+}
+
+#uploadProduct {
+    animation-duration: 0.5s;
+}
+</style>
+
+</style>
+{% endblock %}
+
 {% block content %}
 
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                {% if profile.photo %}
-                    <img style="border-radius: 50%; box-shadow: 3px 3px 3px #cecece; width:150px; margin-left:auto;margin-right:auto;display:block;" src="{{profile.photo.url}}" />
-                {% endif %}
-                
+<div style="height:75%; width:250px; position:absolute; top:25%; left:13%; z-index:1024;" align="center">
+    <!-- Profile Picture and Message, Follow, and Block Buttons-->
+    <div class="w-100" align="center" style="top:50px">
+        <div style="width:100%; display:block;">
+        {% if profile.photo %}
+            <img style="border-radius: 50%; border:solid 4px white; width:100%; display:block;" src="{{profile.photo.url}}" />
+        {% endif %}
+            <hr class="my-3" style="width:75%" />
+            <div>
+                <div style="background-color:rgba(249, 250, 251, 1); border-radius:5px; max-height:150px; overflow:hidden" class="card w-100 p-1 mb-3 border shadow-sm">
+                    <h5 class="text-mute">BIO:</h5>
+                    <hr style="margin:0; width:90%" />
+                    <p class="p-1" style="margin:0px; text-overflow: ellipsis; overflow-y:auto">{{profile.bio}}</p>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- Navigation -->
+    <div class="list-group mx-auto" role="tablist">
+        <a class="list-group-item list-group-item-action active w-100" data-toggle="list" role="tab" href="#userPosts">Posts</a>
+        <a class="list-group-item list-group-item-action w-100" data-toggle="list" role="tab" href="#userListings">Listings</a>
+        <a class="list-group-item list-group-item-action w-100" data-toggle="list" role="tab" href="#userEvents">Events</a>
+    </div>
+</div>
+
+<div class="mx-auto" style="width:100%; height:25%;" >
+    <div class="row mb-2">
+        <div id="profileHeader" class="mx-auto" style="object-fit:cover; width:100%; min-height:150%; background-image: linear-gradient(to bottom right, DeepPink, cyan)">
+        </div>
+        <!--<img src="{% static "css/img/people-connecting.jpg" %}" class="mx-auto border rounded" style="object-fit:cover; width:100%; min-height:150%; filter:grayscale(80%);">-->
+        <h1 class="text-white display-4" style="position:fixed; top:37%; left:27%">{{ profile.user.get_full_name }}</h1>
+    </div>
+
+    
+
+    <div class="row">
+        <!-- Navigation -->
+        <div class="col-3"></div>
+        <!--User posts, listings, and events-->
+        <div class="col-9 p-3" align="center" style="overflow:scroll; height:500px;">
+            <div class="tab-content">
+                <!--User's Posts-->
+                <div class="tab-pane fade show active w-75" id="userPosts" role="tabpanel">
+                    <ul class="list-group">
+                    {% for post in user_posts %}
+                        <li style="border:none; float:left;" class="list-group-item w-100"> 
+                        <div style="padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#f2f2f2;box-shadow: 3px 3px 3px #cecece;">
+                            {% if post.profile.photo %}
+                                <img style="border-radius: 50%; width:50px; float:left;" src="{{post.profile.photo.url}}" />
+                            {% else %}
+                                <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
+                            {% endif %}
+                            <p style="padding-left:15px;float:left;margin-top:10px;">{{ profile.user.get_full_name }}</p>
+                            <p class="text-muted" style="padding-left:15px;float:left;margin-top:10px;">{{ post.datePosted }}</p>
+                            <br />
+                            {% if post.picture %}
+                            <hr class="my-3" style="width:80%;" />
+                                <img style="border-radius: 10%;height: 230px; width:230px;" src="{{post.picture.url}}" />
+                            {% endif %}
+                            <hr class="my-4" style="width:80%;" />
+                            <p class="p-1">{{post.postContent}}</p>
+                        </div>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                <!--User's Listings-->
+                <div class="tab-pane fade w-75" align="left" id="userListings" role="tabpanel">
+                    {% for product in user_listings %}
+                    <a style="text-decoration: none;" href="{% url 'listing' product.id %}" class="productButton">
+                        <div class="p-1 m-1 priceTag">
+                            {% if product.sold %}
+                                <b>SOLD</b>
+                            {% else %}
+                                {% if product.price is not 0 %}
+                                    <b>${{ product.price }}</b>
+                                {% else %}
+                                    <b>FREE</b>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="productUpper">
+                            {% if product.photo %}
+                                <img style="width:100%;{% if product.sold %} filter:brightness(65%) {% endif %}" src="{{ product.photo.url }}" />
+                            {% endif %}
+                        </div>
+                        <div class="p-2 productLower">
+                            <p style="text-overflow: ellipsis; overflow:hidden; white-space: nowrap; margin-bottom:5px;">
+                                <b>{{ product.name }}</b>
+                            </p>
+                            <p class="text-muted" style="font-size:10pt;">
+                                {{ product.location }}
+                            </p>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+                <!--User's Events-->
+                <div class="tab-pane fade w-75" id="userEvents" role="tabpanel">
+                    <ul class="list-group list-group-flush">
+                    {% for event in user_events %}
+                        <li class="list-group-item"><a href="{%url 'events' event.id %}">{{ event.name }}</a></li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
     <div style="text-align:center;padding-top:10px;padding-bottom:10px;"><h2>{{profile.user.first_name}}&nbsp;{{profile.user.last_name}}</h2></div>
     <div style="text-align:center;padding-bottom:10px;">
         <form action="{% url 'public_profile' profile.user.id %}" method="post"> {% csrf_token %}
@@ -60,4 +242,29 @@
              <div class="col"></div>
         </div>
     </div>
+-->
+
+<script>
+    var profileHeader = document.getElementById("profileHeader");
+
+    /*Taken from https://stackoverflow.com/a/1484514 to generate random color*/
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    function setRandomColor() {
+        turnValue = Math.random().toFixed(2);
+        color1 = getRandomColor();
+        color2 = getRandomColor();
+        color3 = getRandomColor();
+        profileHeader.style.backgroundImage = "linear-gradient(" + turnValue + "turn, " + color1 +  ", " + color2 + ", " + color3 + ")";
+    }
+
+    $(window).on("load", setRandomColor())
+</script>
 {% endblock %}
