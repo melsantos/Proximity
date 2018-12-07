@@ -1,7 +1,11 @@
 {% extends "pages/base.html" %}
+{% load leaflet_tags %}
 
 {% block extrahead %}
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!-- JS and CSS for leaflet maps-->
+{% leaflet_js %}
+{% leaflet_css %}
 {% endblock %}
 
 {% block content %}
@@ -24,6 +28,7 @@
     border-radius: 50%; 
     width:50px; 
     float:left;
+    vertical-align:middle;
 }
 
 /* Modified and taken from https://github.com/IanLunn/Hover */
@@ -50,24 +55,28 @@
     -webkit-transform: translateY(-4px);
     transform: translateY(-4px);
 }
-
+.leaflet-container {
+    height:100%;
+    width:100%;
+    border-radius: 5px;
+}
 </style>
 
 <div class="container mx-auto card shadow-sm">
-    <div class="row">
-        <div class="col-lg-6 border-right">
-            <div class="w-100 p-2">
+    <div class="row border-bottom">
+        <div class="col-lg-6 border-right p-2" style="display:flex; align-items:center">
+            <div class="w-100">
             {% if product.photo %}
-                <img style="width:100%" src="{{ product.photo.url }}" />
+                <img style="width:100%; border-radius:5px;" src="{{ product.photo.url }}" />
             {% endif %}
             </div>
         </div>
-        <div class="col-lg">
+        <div class="col-lg-6" style="position:relative">
             <div style="height:65px;">
                 <a href="{% url 'public_profile' product.seller.user.id %}" class="profileButton" style="text-decoration:none;">
                     <div style="display:flex; align-items:center">
                         {% if product.seller.photo %}
-                            <img class="profileImage" style="vertical-align:middle" src="{{product.seller.photo.url}}" />
+                            <img class="profileImage" src="{{product.seller.photo.url}}" />
                         {% endif %}
                         &nbsp;
                         <h5 class="align-middle"> {{product.seller.user.first_name}}&nbsp;{{product.seller.user.last_name}}</h5>
@@ -94,17 +103,31 @@
                 <p class="my-2">{{ product.description }}</p>
             </div>
 
-            <div class="w-100 p-3">
+            <div class="w-100 p-3 mx-auto" style="position:absolute; bottom:0px; right:0px;">
                 <hr />
                 <a style="box-shadow: 3px 3px 3px #cecece;" class="btn btn-block btn-primary hvr-icon-float" href="{% url 'postman:write' product.seller.user.username %}?subject={{product.name}} Offer&body=I'm interested...">
                     <i class="material-icons hvr-icon">mail_outline</i> Message Seller
                 </a>
-                <button style="display:none" class="btn btn-block btn-outline-primary">
-                    Make Offer
-                </button>
             </div>
         </div>
     </div>
+    <div class="row my-2 px-2">
+        {% leaflet_map "yourmap" callback="map_init_basic"%}
+    </div>
 </div>
+<script type="text/javascript">
+    function map_init_basic(map, options) {
+        map.setView([{{ product.seller.latitude }}, {{ product.seller.longitude }}], 12);
 
+        circle = L.circle([{{ product.seller.latitude }}, {{ product.seller.longitude }}], {
+                color: 'darkgray',
+                weight: 1,
+                fillColor: 'gray',
+                fillOpacity: 0.3,
+                radius: 2000
+        }).addTo(map).bindPopup('Near {{product.seller.location}}');
+
+        map.fitBounds(circle.getBounds())
+    }
+</script>
 {% endblock %}

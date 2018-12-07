@@ -9,7 +9,7 @@ class Product(models.Model):
     photo = models.ImageField(upload_to="product_pictures/", default="product_pictures/no-image-available.png", null=True, blank=True)
     location = models.CharField(max_length=150, blank=True, default='')
     sold = models.BooleanField(default=False)
-    description = models.TextField(blank=True, null=True, default='')
+    description = models.TextField(blank=True, null=True, default='', max_length=450)
     date_created = models.DateTimeField(auto_now=True)
 
     def __str__(self):

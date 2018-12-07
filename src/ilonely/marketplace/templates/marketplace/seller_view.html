@@ -81,10 +81,10 @@
     <form method="POST" style="margin-bottom:0" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row" >
-            <div class="col-lg-6 p-3">
-                <div class="preview">
+            <div class="col-lg-6 p-3 w-100" style="display:flex; align-items:center">
+                <div class="preview w-100">
                 {% if product.photo %}
-                    <img id="productPhotoPreview" style="width:100%" src="{{ product.photo.url }}" />
+                    <img id="productPhotoPreview" style="width:100%; border-radius: 5px" src="{{ product.photo.url }}" />
                 {% endif %}
                 </div>
             </div>
