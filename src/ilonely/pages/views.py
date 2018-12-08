@@ -507,9 +507,19 @@ def public_profile(request, userid):
                 })
 
 @login_required(login_url="home")
-def my_profile(request):
+def account(request):
     userid = request.user
     profile = Profile.objects.filter(user = userid).first()
+
+    me = User.objects.get(pk=userid.id)
+    #blocked users are removed from the follow list
+    if Follow.objects.filter(userFollowing=me):
+        followSet = User.objects.filter(pk__in = Follow.objects.filter(userFollowing = me).values_list('user'))
+        profilesIFollow = list(Profile.objects.filter(user__in = followSet))
+
+    # list of people I'm blocking
+    blocking = Block.objects.filter(userBlocking=userid.id)
+
     if request.method == 'POST':
         if request.POST.get('editFields'):
             newfname = request.POST.get("fnamespace")
@@ -528,18 +538,21 @@ def my_profile(request):
                 profile.photo = request.FILES['profilePhoto'] 
         userid.save()
         profile.save()
-        return render(request, 'pages/my_profile.html', 
+        return render(request, 'pages/account.html', 
                         {'title': (profile.user.first_name + ' Profile Page'),
                         'profile' : profile,
+                        'following' : profilesIFollow,
+                        'blocking' : blocking,
                         }
                       )
     else:
-        return render(request, 'pages/my_profile.html',
+        return render(request, 'pages/account.html',
                         {'title': (profile.user.first_name + ' Profile Page'),
                         'profile' : profile,
+                        'following' : profilesIFollow,
+                        'blocking' : blocking,
                         }
                       )
-
 
 def blockUsers(peopleNear, me):
     peopleBlockingMe = User.objects.filter(pk__in = Block.objects.filter(user = me).values_list('userBlocking'))

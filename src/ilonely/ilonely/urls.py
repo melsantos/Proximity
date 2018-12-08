@@ -40,10 +40,11 @@ urlpatterns = [
     url(r'^user_home/$', pages.views.user_home_view, name='user_home'),
     url(r'^set_location$', pages.views.set_location, name='set_location'),
     url(r'^notifications$', pages.views.notifications_view, name='notifications'),
-    url(r'^view_following$', pages.views.view_following, name='view_following'),
+    # url(r'^view_following$', pages.views.view_following, name='view_following'),
     url(r'^view_nearby$', pages.views.view_nearby, name='view_nearby'),
     url(r'^public_profile/(?P<userid>\d+)/$', pages.views.public_profile, name='public_profile'),
-    url(r'^my_profile/$', pages.views.my_profile, name='my_profile'),
+    # url(r'^my_profile/$', pages.views.my_profile, name='my_profile'),
+    url(r'^account/$', pages.views.account, name='account'),
     url(r'^feed$', pages.views.user_home_view, name='feed'),
     url(r'^admin/', admin.site.urls), # admin site url
     url(r'^messages/', include('postman.urls', namespace='postman')),

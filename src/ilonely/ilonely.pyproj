@@ -151,6 +151,7 @@
     <Content Include="pages\static\js\jquery.datepair.js" />
     <Content Include="pages\static\js\jquery.timepicker.css" />
     <Content Include="pages\static\js\jquery.timepicker.js" />
+    <Content Include="pages\templates\pages\account.html" />
     <Content Include="pages\templates\pages\events.html" />
     <Content Include="pages\templates\pages\notification_badge.html" />
     <Content Include="pages\templates\pages\base.html" />
