@@ -2,20 +2,12 @@
 {% load leaflet_tags %}
 
 {% block extrahead %}
-    {% leaflet_js %}
-    {% leaflet_css %}
-
-    <!-- Javascript for filtering nearby people -->
-    <script src="static/js/extras.js"></script>
-{% endblock %}
-
-{% block content %}
 <style>
 #profileButton {
     cursor: pointer;
     width: 400px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 8px;
+    padding-bottom: 8px;
     padding-left: 20px;
     border: none;
     background-color: #f2f2f2;
@@ -29,7 +21,8 @@
 
 .leaflet-container {  /* all maps */
     width:  100%;
-    height: 75%;
+    height: 100%;
+    border-radius:5px;
 }
 
 input[type=number]::-webkit-inner-spin-button, 
@@ -37,71 +30,127 @@ input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none; 
     margin: 0; 
 }
+
+::-webkit-scrollbar { 
+    display: none; 
+}
+
+body {
+    padding-top:26px;
+}
+
+.hvr-underline-reveal {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  position: relative;
+  overflow: hidden;
+}
+.hvr-underline-reveal:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #2098D1;
+  height: 4px;
+  -webkit-transform: translateY(4px);
+  transform: translateY(4px);
+  -webkit-transition-property: transform;
+  transition-property: transform;
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-timing-function: ease-out;
+  transition-timing-function: ease-out;
+}
+.hvr-underline-reveal:hover:before, .hvr-underline-reveal:focus:before, .hvr-underline-reveal:active:before {
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
+}
 </style>
 
-<div class="mb-3 p-2" id="filters">
-    <h2>Nearby in {{request.user.profile.location}}</h2>
-    <div class="nav btn-toolbar justify-content-center">
-        <form method="GET">
-            <!-- Filter nearby users by miles -->
-            <span class="input-group">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search Hobbies" aria-label="Search" name="hobbies">
-                <span class="btn-group btn-group-toggle mr-2" data-toggle="buttons">
-                    <span class="btn input-group-text">Mile</span>
-                    <label class="btn btn-outline-primary">
-                        <input type="radio" autocomplete="off" name="milesFilter" value="10">10
-                    </label>
-                    <label class="btn btn-outline-primary">
-                        <input type="radio" autocomplete="off" name="milesFilter" value="5">5
-                    </label>
-                    <label class="btn btn-outline-primary">
-                        <input type="radio" autocomplete="off" name="milesFilter" value="3">3
-                    </label>
-                    <label class="btn btn-outline-primary">
-                        <input type="radio" autocomplete="off" name="milesFilter" value="1">1                        
-                    </label>
-                </span>
-                
-                <!-- Filter nearby users by age -->
-                <span class="input-group mr-2">
-                    <span class="input-group-prepend">
-                        <span class="input-group-text">Age</span>
-                    </span>
-                    <label class="form-control" style="width:150px">
-                        <input type="range" min="18" max="100" value="100" class="slider" name="ageFilter" id="ageSlider">
-                    </label>
-                    <input type="number" min="18" max="100" class="form-control" style="width:60px" id="ageOutput"/>
-                </span>
+{% leaflet_js %}
+{% leaflet_css %}
 
-                <input type="submit" class="btn btn-primary" value="Submit"/>
-            </span>
-        </form>
-    </div>
-</div>
+<!-- Javascript for filtering nearby people -->
+<script src="static/js/extras.js"></script>
+{% endblock %}
+
+{% block content %}
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-3-auto">
-            <div class="h-75" style="overflow-y:scroll;">
-                <form action="{% url 'view_nearby' %}" method="post"> {% csrf_token %}
-                <ul class="list-group list-group-flush" id="profiles">
-                {% for person, distance in people %}
-                    <li style="border: none;" class="list-group-item">             
-                        <button type="submit" name="viewUser" id="profileButton" value="{{person.user.id}}">
-                            {% if person.photo %}
-                                <img style="border-radius: 50%; width:50px; float:left;" src="{{person.photo.url}}" />
-                            {% endif %}
-                            <p style="padding-left:15px;margin-bottom:0;float:left;" class="personName">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p><br>
-                            <small class="text-muted" style="padding-left:15px;float:left">{{person.age}} years old</small>
-                            <small style="text-align:right;align-self:center;float:right" class="distances text-muted ">{{ distance }}mi</small>
-                        </button>
-                        <p class="lat" hidden>{{person.latitude}}</p>
-                        <p class="long" hidden>{{person.longitude}}</p>
-                        <p class="userIDs" hidden>{% url 'public_profile' person.user.id %}</p>
-                    </li>
-                {% endfor %}
-                </ul>
+    <div class="p-2 mb-3 row bg-dark" id="filters" style="height:15%; display:flex; align-items:center; border-bottom:5px solid lightgray;">
+        <div class="col"></div>
+        <div class="col-10">
+        <h2 class="text-white">Nearby in {{request.user.profile.location}}</h2>
+            <div class="nav btn-toolbar justify-content-center">
+                <form method="GET">
+                    <!-- Filter nearby users by miles -->
+                    <span class="input-group">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search Hobbies" aria-label="Search" name="hobbies">
+                        <span class="btn-group btn-group-toggle mr-2" data-toggle="buttons">
+                            <span class="btn input-group-text">Mile</span>
+                            <label class="btn btn-secondary">
+                                <input type="radio" autocomplete="off" name="milesFilter" value="10">10
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" autocomplete="off" name="milesFilter" value="5">5
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" autocomplete="off" name="milesFilter" value="3">3
+                            </label>
+                            <label class="btn btn-secondary">
+                                <input type="radio" autocomplete="off" name="milesFilter" value="1">1                        
+                            </label>
+                        </span>
+                
+                        <!-- Filter nearby users by age -->
+                        <span class="input-group mr-2">
+                            <span class="input-group-prepend">
+                                <span class="input-group-text">Age</span>
+                            </span>
+                            <label class="form-control" style="width:150px">
+                                <input type="range" min="18" max="100" value="100" class="slider" name="ageFilter" id="ageSlider">
+                            </label>
+                            <input type="number" min="18" max="100" class="form-control" style="width:60px" id="ageOutput"/>
+                        </span>
+
+                        <input type="submit" class="btn btn-primary" value="Submit"/>
+                    </span>
                 </form>
+            </div>
+        </div>
+        <div class="col"></div>
+    </div>
+
+
+    <div class="row" style="height:80%">
+        <div class="col-3-auto pl-3">
+            <div class="h-100">
+                <div class="card-body" style="overflow-y:scroll;">
+                    <form action="{% url 'view_nearby' %}" method="post"> {% csrf_token %}
+                    <ul class="list-group list-group-flush" id="profiles">
+                    {% for person, distance in people %}
+                        <li style="border: none;" class="list-group-item">             
+                            <button type="submit" name="viewUser" id="profileButton" value="{{person.user.id}}" class="hvr-underline-reveal">
+                                {% if person.photo %}
+                                    <img style="border-radius: 50%; width:55px; float:left; margin:2px;" src="{{person.photo.url}}" />
+                                {% endif %}
+                                <p style="padding-left:15px;margin-bottom:0;float:left;" class="personName">{{person.user.first_name}}&nbsp;{{person.user.last_name}}</p><br>
+                                <small class="text-muted" style="padding-left:15px;float:left">{{person.age}} years old</small>
+                                <small style="text-align:right;align-self:center;float:right" class="distances text-muted ">{{ distance }}mi</small>
+                            </button>
+                            <p class="lat" hidden>{{person.latitude}}</p>
+                            <p class="long" hidden>{{person.longitude}}</p>
+                            <p class="userIDs" hidden>{% url 'public_profile' person.user.id %}</p>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                    </form>
+                </div>
             </div>
         </div>
         <div class="col">
@@ -125,7 +174,7 @@ input[type=number]::-webkit-outer-spin-button {
                         riseOnHover: 'True', 
                         title: 'it\'s u dawg',
                         autoPan: 'True',
-                        zIndexOffset:'1000',
+                        zIndexOffset:'1024',
         }).addTo(map).bindPopup("<b>That's you!</b>");
 
         map.setView([{{ user.profile.latitude }}, {{ user.profile.longitude }}], 11);

@@ -77,16 +77,14 @@
 	    background: white;
     }
 
-    ::-webkit-scrollbar { 
-        display: none; 
-    }
+
 </style>
-<div class="container-fluid" style="height:700px">
+<div class="container-fluid" style="height:85%">
     <div class="row" style="height:100%;">
         <div class="col">
         </div>
-        <div class="col-6">
-            <ul class="nav nav-pills nav-fill" role="tablist" id="feedTabs" style="padding-top:20px;">
+        <div class="col-6 h-100">
+            <ul class="nav nav-pills nav-fill" role="tablist" id="feedTabs">
                 <li class="nav-item">
                     <a class="nav-link active" data-toggle="tab" role="tab" id="nearby-tab" aria-controls="nearby" aria-selected="true" href="#nearby">Nearby</a>
                 </li>
@@ -98,7 +96,7 @@
                 </li>
             </ul>
             <div class="tab-content card" id="myTabContent">
-                <div class="card-body tab-pane fade show active" style="height:600px;overflow-y:auto;" id="nearby" role="tabpanel" aria-labelledby="nearby-tab">
+                <div class="card-body tab-pane fade show active" style="height:100%;overflow-y:auto;" id="nearby" role="tabpanel" aria-labelledby="nearby-tab">
                     <form action="{% url 'feed' %}" method="post"> {% csrf_token %}
                         <ul class="list-group list-group-flush">
                         {% for post in nearbyPosts %}
@@ -124,7 +122,7 @@
                         </ul> 
                     </form>
                 </div>
-                <div class="card-body tab-pane fade" style="height:600px;overflow-y:auto;" id="following" role="tabpanel" aria-labelledby="following-tab">
+                <div class="card-body tab-pane fade" style="height:100%;overflow-y:auto;" id="following" role="tabpanel" aria-labelledby="following-tab">
                     <form action="{% url 'feed' %}" method="post"> {% csrf_token %}
                         <ul class="list-group list-group-flush">
                         {% for post in followingPosts %}
@@ -150,7 +148,7 @@
                         </ul>
                     </form>
                 </div>
-                <div class="card-body tab-pane fade" style="height:600px;overflow-y:auto;" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+                <div class="card-body tab-pane fade" style="height:100%;overflow-y:auto;" id="personal" role="tabpanel" aria-labelledby="personal-tab">
                     <ul class="list-group list-group-flush">
                     {% for post in personalPosts %}
                         <li style="border: none; " class="list-group-item"> 

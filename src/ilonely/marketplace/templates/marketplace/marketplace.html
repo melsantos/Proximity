@@ -16,8 +16,8 @@
 
 .productButton {
     display: inline-block;
-    height: 240px;
-    width: 190px;
+    height: 280px;
+    width: 200px;
     background-color: lightgray;
     border-radius: 3px;
     text-decoration: none;
@@ -71,6 +71,7 @@
     background-color:rgba(0, 0, 0, 0.75);
     color:white;
     border-radius:5px;
+    font-size:14pt;
 }
 
 .nobullet {
@@ -82,7 +83,7 @@
 }
 </style>
 
-<div class="container mt-4">
+<div class="container-fluid mt-4" style="width:80%; height:90%">
 
     <ul class="nav nav-tabs" role="tablist" id="myTab">
         <li class="nav-item">
@@ -91,10 +92,6 @@
         <li class="nav-item">
             <a class="nav-link" data-toggle="tab" role="tab" id="my-products-tab" href="#myProducts"><i class="material-icons">monetization_on</i>What I'm Selling</a>
         </li>
-        <!--
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" role="tab" id="my-bids-tab" href="#myBids">My Bids</a>
-        </li>-->
     </ul>
 
     <div class="tab-content" style="text-align:left;">
@@ -143,7 +140,7 @@
                     </div>
                 </div> 
         
-                <div class="col border-left p-3">
+                <div class="col-9 border-left p-3">
                     {% for product in products %}
                         <a style="text-decoration: none;" href="{% url 'listing' product.id %}" class="productButton">
                             <div class="p-1 m-1 priceTag">
@@ -210,12 +207,6 @@
                         </a>
                     {% endfor %}
                 </div>
-            </div>
-        </div>
-
-        <div class="tab-pane fade" id="myBids" role="tabpanel">
-            <div class="row">
-                <h5>TODO: Implement My Bids</h5>
             </div>
         </div>
     </div>

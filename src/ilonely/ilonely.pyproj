@@ -297,7 +297,6 @@
     <Content Include="pages\static\admin\js\vendor\xregexp\LICENSE.txt" />
     <Content Include="pages\static\admin\js\vendor\xregexp\xregexp.js" />
     <Content Include="pages\static\admin\js\vendor\xregexp\xregexp.min.js" />
-    <Content Include="pages\static\css\base.css" />
     <Content Include="pages\static\css\bootstrap-grid.css" />
     <Content Include="pages\static\css\bootstrap-grid.css.map" />
     <Content Include="pages\static\css\bootstrap-grid.min.css" />
@@ -310,7 +309,6 @@
     <Content Include="pages\static\css\bootstrap.css.map" />
     <Content Include="pages\static\css\bootstrap.min.css" />
     <Content Include="pages\static\css\bootstrap.min.css.map" />
-    <Content Include="pages\static\css\home.css" />
     <Content Include="pages\static\css\messaging.css" />
     <Content Include="pages\static\css\sidebar.css" />
     <Content Include="pages\static\js\bootstrap.bundle.js" />

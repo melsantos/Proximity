@@ -76,57 +76,56 @@
 #uploadProduct {
     animation-duration: 0.5s;
 }
-</style>
 
+body {
+    padding:0;
+    margin:0;
+}
+
+.row {
+    margin:0;
+}
 </style>
 {% endblock %}
 
 {% block content %}
+<div class="contiainer-fluid" align="center" style="height:95%;">
+    <!-- Profile Header -->
+    <div class="row mb-2" style="position:absolute; width:100%; height:40%; top:50px; z-index:100">
+        <div id="profileHeader" class="mx-auto" style="object-fit:cover; width:100%; height:100%; background-image: linear-gradient(to bottom right, DeepPink, cyan); position:relative">
+            <h1 class="text-white display-4" style="position:absolute; bottom:0; left:30%">{{ profile.user.get_full_name }}</h1>
+        </div>
+    </div>
 
-<div style="height:75%; width:250px; position:absolute; top:25%; left:13%; z-index:1024;" align="center">
-    <!-- Profile Picture and Message, Follow, and Block Buttons-->
-    <div class="w-100" align="center" style="top:50px">
-        <div style="width:100%; display:block;">
-        {% if profile.photo %}
-            <img style="border-radius: 50%; border:solid 4px white; width:100%; display:block;" src="{{profile.photo.url}}" />
-        {% endif %}
-            <hr class="my-3" style="width:75%" />
-            <div>
-                <div style="background-color:rgba(249, 250, 251, 1); border-radius:5px; max-height:150px; overflow:hidden" class="card w-100 p-1 mb-3 border shadow-sm">
-                    <h5 class="text-mute">BIO:</h5>
-                    <hr style="margin:0; width:90%" />
-                    <p class="p-1" style="margin:0px; text-overflow: ellipsis; overflow-y:auto">{{profile.bio}}</p>
+    <div class="row" style="width:80%">
+        <!-- Profile Picture and Message, Follow, and Block Buttons-->
+        <div class="col-3" align="center" style="z-index:1025; height:100%; display:flex; align-items:center">
+            <div style="width:350px;">
+            {% if profile.photo %}
+                <img style="border-radius:50%; border:solid 4px white; width:100%;" src="{{profile.photo.url}}" />
+            {% endif %}
+                <hr class="my-3" style="width:75%" />
+                <div>
+                    <div style="background-color:rgba(249, 250, 251, 1); border-radius:5px; max-height:150px; overflow:hidden" class="card w-100 p-1 mb-3 border shadow-sm">
+                        <h5 class="text-mute">BIO:</h5>
+                        <hr style="margin:0; width:90%" />
+                        <p class="p-1" style="margin:0px; text-overflow: ellipsis; overflow-y:auto">{{profile.bio}}</p>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="list-group mx-auto" role="tablist">
+                    <a class="list-group-item list-group-item-action active w-100" data-toggle="list" role="tab" href="#userPosts">Posts</a>
+                    <a class="list-group-item list-group-item-action w-100" data-toggle="list" role="tab" href="#userListings">Listings</a>
+                    <a class="list-group-item list-group-item-action w-100" data-toggle="list" role="tab" href="#userEvents">Events</a>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Navigation -->
-    <div class="list-group mx-auto" role="tablist">
-        <a class="list-group-item list-group-item-action active w-100" data-toggle="list" role="tab" href="#userPosts">Posts</a>
-        <a class="list-group-item list-group-item-action w-100" data-toggle="list" role="tab" href="#userListings">Listings</a>
-        <a class="list-group-item list-group-item-action w-100" data-toggle="list" role="tab" href="#userEvents">Events</a>
-    </div>
-</div>
-
-<div class="mx-auto" style="width:100%; height:25%;" >
-    <div class="row mb-2">
-        <div id="profileHeader" class="mx-auto" style="object-fit:cover; width:100%; min-height:150%; background-image: linear-gradient(to bottom right, DeepPink, cyan)">
-        </div>
-        <!--<img src="{% static "css/img/people-connecting.jpg" %}" class="mx-auto border rounded" style="object-fit:cover; width:100%; min-height:150%; filter:grayscale(80%);">-->
-        <h1 class="text-white display-4" style="position:fixed; top:37%; left:27%">{{ profile.user.get_full_name }}</h1>
-    </div>
-
-    
-
-    <div class="row">
-        <!-- Navigation -->
-        <div class="col-3"></div>
-        <!--User posts, listings, and events-->
-        <div class="col-9 p-3" align="center" style="overflow:scroll; height:500px;">
-            <div class="tab-content">
+        <div class="col-9 p-3 d-flex align-items-end">
+            <div class="tab-content w-100" style="height:50%; overflow:auto;">
                 <!--User's Posts-->
-                <div class="tab-pane fade show active w-75" id="userPosts" role="tabpanel">
+                <div class="tab-pane fade show active" id="userPosts" role="tabpanel">
                     <ul class="list-group">
                     {% for post in user_posts %}
                         <li style="border:none; float:left;" class="list-group-item w-100"> 
@@ -151,7 +150,7 @@
                     </ul>
                 </div>
                 <!--User's Listings-->
-                <div class="tab-pane fade w-75" align="left" id="userListings" role="tabpanel">
+                <div class="tab-pane fade" style="padding-top:1em" align="left" id="userListings" role="tabpanel">
                     {% for product in user_listings %}
                     <a style="text-decoration: none;" href="{% url 'listing' product.id %}" class="productButton">
                         <div class="p-1 m-1 priceTag">
@@ -182,7 +181,7 @@
                     {% endfor %}
                 </div>
                 <!--User's Events-->
-                <div class="tab-pane fade w-75" id="userEvents" role="tabpanel">
+                <div class="tab-pane fade w-100" id="userEvents" role="tabpanel">
                     <ul class="list-group list-group-flush">
                     {% for event in user_events %}
                         <li class="list-group-item"><a href="{%url 'events' event.id %}">{{ event.name }}</a></li>

@@ -30,7 +30,8 @@
         vertical-align: middle;
     }
     body {
-        margin-top:70px;
+        height:100vh;
+        padding-top: 50px;
     }
     </style>
 
@@ -38,55 +39,52 @@
 </head>
 
 <body>
-    {% if request.user.is_authenticated %}
-        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-            <div class="container-fluid">
-                <a class="navbar-brand" href={% url 'home' %}>proximity</a>
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item"><a class="nav-link" href={% url 'user_home' %}>Home</a></li>
-                    <li class="nav-item dropdown">{% postman_unread as unread_count %}
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans "Messages" %}{% if unread_count %} <strong>({{ unread_count }})</strong>{% endif %}</a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href={% url 'postman:inbox' %}>{% trans "Inbox" %}</a>
-                            <a class="dropdown-item" href={% url 'postman:sent' %}>{% trans "Sent Messages" %}</a>
-                            <a class="dropdown-item" href={% url 'postman:write' %}>{% trans "Write" %}</a>
-                            <a class="dropdown-item" href={% url 'postman:archives' %}>{% trans "Archives" %}</a>
-                            <a class="dropdown-item" href={% url 'postman:trash' %}>{% trans "Trash" %}</a>
-                        </div>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href={% url 'view_nearby' %}>Nearby</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'marketplace' %}">Marketplace</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'events' 0 %}">Events</a></li>
-                </ul> 
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark" style="height:50px;">
+        {% if request.user.is_authenticated %}
+        <div class="container-fluid">
+            <a class="navbar-brand" href={% url 'home' %}>proximity</a>
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href={% url 'user_home' %}>Home</a></li>
+                <li class="nav-item dropdown">{% postman_unread as unread_count %}
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{% trans "Messages" %}{% if unread_count %} <strong>({{ unread_count }})</strong>{% endif %}</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href={% url 'postman:inbox' %}>{% trans "Inbox" %}</a>
+                        <a class="dropdown-item" href={% url 'postman:sent' %}>{% trans "Sent Messages" %}</a>
+                        <a class="dropdown-item" href={% url 'postman:write' %}>{% trans "Write" %}</a>
+                        <a class="dropdown-item" href={% url 'postman:archives' %}>{% trans "Archives" %}</a>
+                        <a class="dropdown-item" href={% url 'postman:trash' %}>{% trans "Trash" %}</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href={% url 'view_nearby' %}>Nearby</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'marketplace' %}">Marketplace</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'events' 0 %}">Events</a></li>
+            </ul> 
 
-                <ul class="navbar-nav ml-auto">
-                    <li>
-                    <a class="nav-link" href={% url 'notifications' %}>
-                        <i class="material-icons" style="color:white">notifications</i>
-                        {% load notif_badge_tags %}
-                        {% show_new_notifications request.user.id %}
-                    </a>
-                    </li>
-                    <li class="nav-item mr-2"><a class="nav-link" href={% url 'account' %}>Account</a></li>
-                </ul>
+            <ul class="navbar-nav ml-auto">
+                <li>
+                <a class="nav-link" href={% url 'notifications' %}>
+                    <i class="material-icons" style="color:white">notifications</i>
+                    {% load notif_badge_tags %}
+                    {% show_new_notifications request.user.id %}
+                </a>
+                </li>
+                <li class="nav-item mr-2"><a class="nav-link" href={% url 'account' %}>Account</a></li>
+            </ul>
             
-                <form class="form-inline my-2 my-lg-0 Logout-link" action="logout" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-primary btn-sm" style="vertical-align:middle">Logout</button>
-                </form>
-            </div>
-        </nav>
-    {% else %}
-        <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
-            <div class="container-fluid">
-                <a class="navbar-brand" href={% url 'home' %}>proximity</a>
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class ="nav-link" href={% url 'register' %}>Register</a></li>
-                    <li class="nav-item"><a class ="nav-link" href={% url 'login' %}>Login</a></li>
-                </ul>
-            </div>
-        </nav>
-    {% endif %}
+            <form class="form-inline my-2 my-lg-0 Logout-link" action="logout" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn-sm" style="vertical-align:middle">Logout</button>
+            </form>
+        {% else %}
+            <a class="navbar-brand" href={% url 'home' %}>proximity</a>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class ="nav-link" href={% url 'register' %}>Register</a></li>
+                <li class="nav-item"><a class ="nav-link" href={% url 'login' %}>Login</a></li>
+            </ul>
+        {% endif %}
+        </div>
+    </nav>
+    
     {% block postman_menu %} {% endblock %}
     {% block content %}{% endblock %}
 </body>

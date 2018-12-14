@@ -44,6 +44,10 @@ instagram_auth_url = 'https://api.instagram.com/oauth/authorize/?client_id=' + s
 
 def home(request):
     assert isinstance(request, HttpRequest)
+
+    if request.user.is_authenticated:
+        return redirect('user_home')
+
     return render(
         request,
         'pages/home.html',
