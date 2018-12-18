@@ -1,4 +1,3 @@
-from .forms import CustomUserCreationForm, CustomForgotUsernameForm
 from datetime import datetime
 from django.conf import settings
 from django.contrib.auth import login, logout, authenticate
@@ -41,7 +40,6 @@ import requests
 INSTAGRAM_REDIRECT_URI = 'http://localhost:8000/user_home/'
 instagram_auth_url = 'https://api.instagram.com/oauth/authorize/?client_id=' + settings.INSTAGRAM_CLIENT_ID + '&redirect_uri=' + INSTAGRAM_REDIRECT_URI + '&response_type=code'
 
-
 def home(request):
     assert isinstance(request, HttpRequest)
 
@@ -56,103 +54,6 @@ def home(request):
         }
     )
 
-def register(request):
-    assert isinstance(request, HttpRequest)
-    if request.method == 'POST':
-        form = CustomUserCreationForm(data=request.POST)
-
-        # Automatically signs the user in
-        if form.is_valid():
-            user = form.save()
-            user.profile.age = form.cleaned_data.get('age')
-            user.profile.save()
-            user.save()
-            login(request, user, 'django.contrib.auth.backends.ModelBackend')
-            user.email_user(
-                subject='Welcome to iLonely!',
-                message = 'Hi %s! We hope you\'ll enjoy iLonely!' % user.get_username()
-            )
-            return redirect('success')
-    else:
-        form = CustomUserCreationForm()
-
-    return render(
-        request,
-        'pages/register.html',
-        {
-            'title':'Registration',
-            'form':form,
-        }
-    )
-
-def login_view(request):
-    assert isinstance(request, HttpRequest)
-
-    if request.user.is_authenticated:
-        return redirect('user_home')
-
-    if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
-        if form.is_valid():
-            # Log in the user
-            user = form.get_user()
-            login(request, user, 'django.contrib.auth.backends.ModelBackend')
-            # Take user to their home page
-            return redirect('user_home') 
-    else:
-        form = AuthenticationForm()
-    return render(
-        request,
-        'registration/login.html',
-        {
-            'title':'Login',
-            'form':form,
-        }
-    )
-
-def logout_view(request):
-    if request.method == 'POST':
-        logout(request)
-        return redirect('home')
-    return
-
-def forgot_username_view(request):
-    assert isinstance(request, HttpRequest)
-    confirm = False
-    if request.method == 'POST':
-        form = CustomForgotUsernameForm(data=request.POST)
-        if form.is_valid:
-            confirm = True
-            try:
-                user = User.objects.filter(email=form['email']).first()
-            except User.DoesNotExist:
-                user = None
-            if user is not None:
-                user.email_user(
-                    subject='iLonely: Account Username',
-                    message = 'Did you forget your username? Don\'t worry, we didn\'t. Your username is: %s' % user.get_username()
-                )
-    else:
-        form = CustomForgotUsernameForm()
-    return render(
-        request,
-        'registration/forgot_username.html',
-        {
-            'title':'Forgot Username',
-            'form': form,
-            'confirm': confirm,
-            'confirmation_message': 'We sent an email with your username to your account'
-        }
-    )
-
-def success(request):
-    return render(
-        request,
-        'pages/success.html',
-        {
-            'title':'Sucessful Login'
-        }
-    )
 
 # Prevents anyone from accessing this page unless they are logged in to their account
 @login_required(login_url="home")
@@ -514,6 +415,7 @@ def public_profile(request, userid):
 def account(request):
     userid = request.user
     profile = Profile.objects.filter(user = userid).first()
+    profilesIFollow = []
 
     me = User.objects.get(pk=userid.id)
     #blocked users are removed from the follow list

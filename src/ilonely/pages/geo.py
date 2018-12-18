@@ -39,7 +39,7 @@ def getNearby(user, radius, distList=None, age=None):
 
 # returns a list of events nearby in a something mi radius
 def getNearbyEvents(me, radius, distList=None):
-    events = Event.objects.filter(date__gte = datetime.now().strftime('%m/%d/%Y %I:%M %p')).order_by('category').order_by('date').all()
+    events = Event.objects.all().filter(date__gte = datetime.now().strftime('%m/%d/%Y %I:%M %p')).order_by('category').order_by('-date')
     nearbyEvents = []
     myLoc = (me.latitude, me.longitude)
 

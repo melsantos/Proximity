@@ -1,0 +1,23 @@
+{% extends "pages/base.html" %}
+
+{% block content %}
+    <div class="jumbotron m-3 w-75 h-50 mx-auto" style="text-align:center; display:flex; align-items:center">
+        <div class="mx-auto">
+        <h1 class="display-1">Welcome to proximity!</h1>
+        <p class="lead">Registration successful!</p>
+        <hr class="my-4" />
+        <p>Hey {{ request.user.get_full_name }}, get started with proximity at these links:</p>
+        <ul class="nav nav-pills justify-content-center">
+            <li class="nav-item" title="Edit your profile!">
+                <a class="nav-link" href={% url 'account' %}>Account</a>
+            </li>
+            <li class="nav-item" title="Check out the feed!">
+                <a class="nav-link" href={% url 'user_home' %}>Homepage</a>
+            </li>
+            <li class="nav-item" title="See who's nearby!">
+                <a class="nav-link" href={% url 'view_nearby' %}>Nearby</a>
+            </li>
+        </ul>
+        </div>
+    </div>
+{% endblock %}

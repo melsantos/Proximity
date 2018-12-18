@@ -80,7 +80,7 @@ form {
                                 box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewEvent" value="{{event.id}}">
                                 <p style="padding-left:5px;float:left;margin-top:10px;">{{event.category}}</p>
                                 <p style="padding-left:15px;float:left;margin-top:10px;">{{event.date}}</p>
-                                <span style="float:right; padding-right:5px;">&#8250;</span>
+                                <span style="float:right; padding-right:5px;"><i class="material-icons">keyboard_arrow_right</i><!--&#8250;--></span>
                                 <small style="text-align:right;align-self:center;float:right; padding-top:10%; {% if activeEvent.id == event.id %} color:white !important; {% endif %}" class="distances text-muted ">{{ distance }}mi</small>
                             </button>
                         </li>

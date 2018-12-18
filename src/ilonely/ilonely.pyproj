@@ -32,6 +32,17 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="entry\admin.py" />
+    <Compile Include="entry\apps.py" />
+    <Compile Include="entry\forms.py" />
+    <Compile Include="entry\migrations\__init__.py" />
+    <Compile Include="entry\models.py" />
+    <Compile Include="entry\tests.py" />
+    <Compile Include="entry\urls.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="entry\views.py" />
+    <Compile Include="entry\__init__.py" />
     <Compile Include="manage.py" />
     <Compile Include="ilonely\__init__.py" />
     <Compile Include="ilonely\settings.py" />
@@ -69,6 +80,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="entry\" />
+    <Folder Include="entry\migrations\" />
+    <Folder Include="entry\templates\" />
     <Folder Include="ilonely\" />
     <Folder Include="marketplace\" />
     <Folder Include="marketplace\migrations\" />
@@ -90,7 +104,7 @@
     <Folder Include="pages\templates\" />
     <Folder Include="pages\templates\pages\" />
     <Folder Include="pages\templates\postman\" />
-    <Folder Include="pages\templates\registration\" />
+    <Folder Include="entry\templates\registration\" />
     <Folder Include="pages\static\" />
     <Folder Include="pages\static\admin\" />
     <Folder Include="pages\static\admin\css\" />
@@ -161,22 +175,22 @@
     <Content Include="pages\templates\pages\my_profile.html" />
     <Content Include="pages\templates\pages\notifications.html" />
     <Content Include="pages\templates\pages\public_profile.html" />
-    <Content Include="pages\templates\pages\register.html" />
-    <Content Include="pages\templates\pages\success.html">
+    <Content Include="entry\templates\registration\register.html" />
+    <Content Include="entry\templates\registration\success.html">
       <SubType>Code</SubType>
     </Content>
     <Content Include="pages\templates\pages\user_home.html" />
     <Content Include="pages\templates\pages\view_following.html" />
     <Content Include="pages\templates\pages\view_nearby.html" />
     <Content Include="pages\templates\postman\base.html" />
-    <Content Include="pages\templates\registration\forgot_username.html" />
-    <Content Include="pages\templates\registration\login.html" />
-    <Content Include="pages\templates\registration\password_reset_complete.html" />
-    <Content Include="pages\templates\registration\password_reset_confirm.html" />
-    <Content Include="pages\templates\registration\password_reset_done.html" />
-    <Content Include="pages\templates\registration\password_reset_email.html" />
-    <Content Include="pages\templates\registration\password_reset_form.html" />
-    <Content Include="pages\templates\registration\password_reset_subject.txt" />
+    <Content Include="entry\templates\registration\forgot_username.html" />
+    <Content Include="entry\templates\registration\login.html" />
+    <Content Include="entry\templates\registration\password_reset_complete.html" />
+    <Content Include="entry\templates\registration\password_reset_confirm.html" />
+    <Content Include="entry\templates\registration\password_reset_done.html" />
+    <Content Include="entry\templates\registration\password_reset_email.html" />
+    <Content Include="entry\templates\registration\password_reset_form.html" />
+    <Content Include="entry\templates\registration\password_reset_subject.txt" />
     <Content Include="requirements.txt" />
     <Content Include="pages\static\admin\css\autocomplete.css" />
     <Content Include="pages\static\admin\css\base.css" />
