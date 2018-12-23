@@ -21,7 +21,19 @@ class Post(models.Model):
     picture = models.ImageField(upload_to="post_photos/",null=True)
 
     def __str__(self):
-        return '%s\'s post - %s' % (self.profile.user.get_username(), self.datePosted.strftime("%x %X"))
+        return '%s\'s post - %s' % (self.profile.user.get_full_name(), self.datePosted.strftime("%x %X"))
+
+    def get_comments(self):
+        return Comment.objects.filter(post=self.id)
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    commentContent = models.TextField()
+    datePosted = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '%s\'s comment on %s\'s Post' % (self.profile.user.get_full_name(), self.post.profile.user.get_full_name() )
 
 class Follow(models.Model):
     userFollowing = models.ForeignKey(User, on_delete=models.PROTECT, related_name="userFollowing")

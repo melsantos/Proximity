@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2041
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "ilonely", "ilonely\ilonely.pyproj", "{5956D233-76B2-4358-98E7-DDA233E13A4B}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "proximity", "ilonely\proximity.pyproj", "{5956D233-76B2-4358-98E7-DDA233E13A4B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F273DE23-16D0-4E10-B7B7-70014928C44C}"
 EndProject

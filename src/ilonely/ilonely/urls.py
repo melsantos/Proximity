@@ -19,12 +19,19 @@ from django.conf import settings
 from django.conf.urls.static import static
 from ajax_select import urls as ajax_select_urls
 from postman.views import WriteView
+from pages.forms import CustomWriteForm
 
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^$', pages.views.home, name='home'),
+    'postman.views',
+    url(r'^write/(?:(?P<recipients>[^/#]+)/)?$',
+        WriteView.as_view(form_classes=(CustomWriteForm)),
+        name='write'),
+]
 
+urlpatterns = [
+    url(r'^$', pages.views.home, name='home'),
     url(r'^user_home/$', pages.views.user_home_view, name='user_home'),
     url(r'^set_location$', pages.views.set_location, name='set_location'),
     url(r'^notifications$', pages.views.notifications_view, name='notifications'),
@@ -38,5 +45,6 @@ urlpatterns = [
     url(r'^events/(?P<activeEventId>\d+)/$', pages.views.events, name='events'),
     path(r'marketplace/', include('marketplace.urls')),
     path(r'', include('entry.urls')),
-    url(r'^ajax_select/', include(ajax_select_urls)),   
+    url(r'^ajax_select/', include(ajax_select_urls)),  
+    
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

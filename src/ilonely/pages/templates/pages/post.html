@@ -1,0 +1,32 @@
+<li style="border: none; " class="list-group-item"> 
+    <div class="post">
+        <a class="profileLink" href="{% url 'public_profile' post.profile.user.id %}">
+        {% if post.profile.photo %}
+            <img style="border-radius: 50%; width:50px; float:left;" src="{{post.profile.photo.url}}" />
+        {% else %}
+            <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
+        {% endif %}
+            <p style="padding-left:15px;float:left;margin-top:10px;">{{post.profile.user.first_name}}&nbsp;{{post.profile.user.last_name}}</p>
+        </a>
+        <p class="text-muted" style="padding-left:15px;float:left;margin-top:10px;">{{post.datePosted}}</p>
+        <br />
+        {% if post.picture %}
+        <hr class="my-3" style="width:80%;" />
+            <img style="border-radius: 10%;height: 230px; width:230px;" src="{{post.picture.url}}" />
+        {% endif %}
+        <hr class="my-4" style="width:80%;" />
+        <p>{{post.postContent}}</p>
+        {% if post.get_comments %}
+        <button class="btn btn-info" data-toggle="collapse" type="button" data-target=".comments">
+            Comments
+        </button>
+        {% endif %}
+        <div class="collapse comments">
+            <div class="m-2">
+            {% for comment in post.get_comments %}
+            {% include "pages/comment.html" with comment=comment %}
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+</li>

@@ -2,16 +2,17 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <Name>ilonely</Name>
+    <Name>proximity</Name>
     <RootNamespace>ilonely</RootNamespace>
-    <InterpreterId>MSBuild|env|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|env1|$(MSBuildProjectFullPath)</InterpreterId>
     <WebBrowserPort>8000</WebBrowserPort>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>5956d233-76b2-4358-98e7-dda233e13a4b</ProjectGuid>
-    <ProjectHome>.</ProjectHome>
+    <ProjectHome>
+    </ProjectHome>
     <ProjectTypeGuids>{5F0BE9CA-D677-4A4D-8806-6076C0FAAD37};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
     <StartupFile>manage.py</StartupFile>
     <SearchPath>
@@ -66,6 +67,7 @@
     <Compile Include="pages\migrations\__init__.py" />
     <Compile Include="pages\models.py" />
     <Compile Include="pages\signals.py" />
+    <Compile Include="pages\socialauth.py" />
     <Compile Include="pages\templatetags\notif_badge_tags.py">
       <SubType>Code</SubType>
     </Compile>
@@ -166,6 +168,9 @@
     <Content Include="pages\static\js\jquery.timepicker.css" />
     <Content Include="pages\static\js\jquery.timepicker.js" />
     <Content Include="pages\templates\pages\account.html" />
+    <Content Include="pages\templates\pages\comment.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="pages\templates\pages\events.html" />
     <Content Include="pages\templates\pages\notification_badge.html" />
     <Content Include="pages\templates\pages\base.html" />
@@ -174,6 +179,9 @@
     <Content Include="pages\templates\pages\messaging.html" />
     <Content Include="pages\templates\pages\my_profile.html" />
     <Content Include="pages\templates\pages\notifications.html" />
+    <Content Include="pages\templates\pages\post.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="pages\templates\pages\public_profile.html" />
     <Content Include="entry\templates\registration\register.html" />
     <Content Include="entry\templates\registration\success.html">
@@ -191,6 +199,10 @@
     <Content Include="entry\templates\registration\password_reset_email.html" />
     <Content Include="entry\templates\registration\password_reset_form.html" />
     <Content Include="entry\templates\registration\password_reset_subject.txt" />
+    <Content Include="pages\templates\postman\base_folder.html" />
+    <Content Include="pages\templates\postman\base_write.html" />
+    <Content Include="pages\templates\postman\reply.html" />
+    <Content Include="pages\templates\postman\view.html" />
     <Content Include="requirements.txt" />
     <Content Include="pages\static\admin\css\autocomplete.css" />
     <Content Include="pages\static\admin\css\base.css" />
@@ -387,6 +399,15 @@
   <ItemGroup>
     <Interpreter Include="env\">
       <Id>env</Id>
+      <Version>3.6</Version>
+      <Description>env (Python 3.6 (64-bit))</Description>
+      <InterpreterPath>Scripts\python.exe</InterpreterPath>
+      <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
+      <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>
+      <Architecture>X64</Architecture>
+    </Interpreter>
+    <Interpreter Include="env\">
+      <Id>env1</Id>
       <Version>3.6</Version>
       <Description>env (Python 3.6 (64-bit))</Description>
       <InterpreterPath>Scripts\python.exe</InterpreterPath>

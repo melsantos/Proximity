@@ -54,11 +54,10 @@ def home(request):
         }
     )
 
-
 # Prevents anyone from accessing this page unless they are logged in to their account
 @login_required(login_url="home")
 def user_home_view(request):
-    # Fixme: Hide code from url and silently fail when someone enters a code in url
+    # FIXME: Hide code from url and silently fail when someone enters a code in url
     def get_access_code(code):
         if code != None:
             url = 'https://api.instagram.com/oauth/access_token'
@@ -75,6 +74,7 @@ def user_home_view(request):
             return access_token
         else:
             return None
+
     def get_media(code):
         # Returns the urls of the user's most recent posts (MAX 20: SANDBOX MODE)
         access_token = get_access_code(code)
@@ -88,12 +88,12 @@ def user_home_view(request):
             return media_urls
         else:
             return None
+
     me = User.objects.get(pk=request.user.id)
     myProfile = Profile.objects.get(user = me)
+
     if request.method == 'POST':
-        if request.POST.get('viewUser'):
-            return redirect(public_profile, userid = request.POST['viewUser'])
-        elif request.POST.get('deletePost'):
+        if request.POST.get('deletePost'):
             postid = request.POST['deletePost']
             p = Post.objects.get(pk = postid)
             p.picture.delete(save=True)
@@ -113,10 +113,12 @@ def user_home_view(request):
                     filename = fs.save(myPic.name, myPic)
                 p = Post(profile=myProfile, postContent=myPost, picture=myPic)
             p.save()
+
     #posts of people I follow
     followSet = User.objects.filter(pk__in = Follow.objects.filter(userFollowing = me).values_list('user'))
     profilesIFollow = Profile.objects.filter(user__in = followSet)
     followingPosts = list(Post.objects.filter(profile__in = profilesIFollow).order_by('-datePosted'))
+
     #posts of people nearby
     profilesNearMe = getNearby(me, 10)
     profilesIBlock = User.objects.filter(pk__in = Block.objects.filter(userBlocking = me).values_list('user'))
@@ -459,19 +461,6 @@ def account(request):
                         'blocking' : blocking,
                         }
                       )
-
-def blockUsers(peopleNear, me):
-    peopleBlockingMe = User.objects.filter(pk__in = Block.objects.filter(user = me).values_list('userBlocking'))
-    blockedUsers = list(Profile.objects.filter(user__in = peopleBlockingMe))
-    peopleNearMe = []
-
-    for i in peopleNear:
-        if i in blockedUsers:
-            continue
-        else:
-            peopleNearMe.append(i)  
-
-    return peopleNearMe
   
 @login_required(login_url="home")
 def events(request, activeEventId):
@@ -540,3 +529,16 @@ def events(request, activeEventId):
                                                'going' : going,
                                                'me' : me
                                                })
+
+def blockUsers(peopleNear, me):
+    peopleBlockingMe = User.objects.filter(pk__in = Block.objects.filter(user = me).values_list('userBlocking'))
+    blockedUsers = list(Profile.objects.filter(user__in = peopleBlockingMe))
+    peopleNearMe = []
+
+    for i in peopleNear:
+        if i in blockedUsers:
+            continue
+        else:
+            peopleNearMe.append(i)  
+
+    return peopleNearMe

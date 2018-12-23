@@ -77,12 +77,47 @@
 	    background: white;
     }
 
+    .post {
+        cursor:pointer;width:100%;
+        padding-top:5px;
+        padding-bottom:5px;
+        padding-left:20px;
+        padding-right:20px;
+        border:none;
+        background-color:#f2f2f2;
+        box-shadow: 3px 3px 3px #cecece;
+        text-align:center;
+    }
 
+    .profileLink {
+        color:black;
+    }
+
+    .profileLink:hover{
+        color: black;
+        text-decoration: none;
+    }
+
+    ::-webkit-scrollbar { 
+        width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px lightgray;
+        border-radius: 5px;
+        
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: lightgray; 
+      border-radius: 10px;
+    }
 </style>
+
 <div class="container-fluid" style="height:85%">
     <div class="row" style="height:100%;">
-        <div class="col">
-        </div>
+        <div class="col"></div>
+
         <div class="col-6 h-100">
             <ul class="nav nav-pills nav-fill" role="tablist" id="feedTabs">
                 <li class="nav-item">
@@ -97,68 +132,32 @@
             </ul>
             <div class="tab-content card" id="myTabContent">
                 <div class="card-body tab-pane fade show active" style="height:100%;overflow-y:auto;" id="nearby" role="tabpanel" aria-labelledby="nearby-tab">
-                    <form action="{% url 'feed' %}" method="post"> {% csrf_token %}
-                        <ul class="list-group list-group-flush">
-                        {% for post in nearbyPosts %}
-                            <li style="border: none; " class="list-group-item"> 
-                                <button style="cursor:pointer;width:100%;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#f2f2f2;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{post.profile.user.id}}">
-                                    {% if post.profile.photo %}
-                                        <img style="border-radius: 50%; width:50px; float:left;" src="{{post.profile.photo.url}}" />
-                                    {% else %}
-                                        <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
-                                    {% endif %}
-                                    <p style="padding-left:15px;float:left;margin-top:10px;">{{post.profile.user.first_name}}&nbsp;{{post.profile.user.last_name}}</p>
-                                    <p class="text-muted" style="padding-left:15px;float:left;margin-top:10px;">{{post.datePosted}}</p>
-                                    <br />
-                                    {% if post.picture %}
-                                    <hr class="my-3" style="width:80%;" />
-                                        <img style="border-radius: 10%;height: 230px; width:230px;" src="{{post.picture.url}}" />
-                                    {% endif %}
-                                    <hr class="my-4" style="width:80%;" />
-                                    <p>{{post.postContent}}</p>
-                                </button>
-                            </li>
-                        {% endfor %}
-                        </ul> 
-                    </form>
+                    <ul class="list-group list-group-flush">
+                    {% for post in nearbyPosts %}
+                        {% include 'pages/post.html' with post=post %}
+                    {% endfor %}
+                    </ul> 
                 </div>
-                <div class="card-body tab-pane fade" style="height:100%;overflow-y:auto;" id="following" role="tabpanel" aria-labelledby="following-tab">
-                    <form action="{% url 'feed' %}" method="post"> {% csrf_token %}
-                        <ul class="list-group list-group-flush">
-                        {% for post in followingPosts %}
-                            <li style="border: none; " class="list-group-item"> 
-                                <button style="cursor:pointer;width:100%;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#f2f2f2;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{post.profile.user.id}}">
-                                    {% if post.profile.photo %}
-                                        <img style="border-radius: 50%; width:50px; float:left;" src="{{post.profile.photo.url}}" />
-                                    {% else %}
-                                        <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
-                                    {% endif %}
-                                    <p style="padding-left:15px;float:left;margin-top:10px;">{{post.profile.user.first_name}}&nbsp;{{post.profile.user.last_name}}</p>
-                                    <p class="text-muted" style="padding-left:15px;float:left;margin-top:10px;">{{post.datePosted}}</p>
-                                    <br />
-                                    {% if post.picture %}
-                                    <hr class="my-3" style="width:80%;" />
-                                        <img style="border-radius: 10%;height: 230px; width:230px;" src="{{post.picture.url}}" />
-                                    {% endif %}
-                                    <hr class="my-4" style="width:80%;" />
-                                    <p>{{post.postContent}}</p>
-                                </button>
-                            </li>
-                        {% endfor %}
-                        </ul>
-                    </form>
+                <div class="card-body tab-pane fade" style="height:100%;overflow-y:auto;" id="following" role="tabpanel" aria-labelledby="following-tab">             
+                    <ul class="list-group list-group-flush">
+                    {% for post in followingPosts %}
+                        {% include 'pages/post.html' with post=post %}
+                    {% endfor %}
+                    </ul>
                 </div>
                 <div class="card-body tab-pane fade" style="height:100%;overflow-y:auto;" id="personal" role="tabpanel" aria-labelledby="personal-tab">
                     <ul class="list-group list-group-flush">
                     {% for post in personalPosts %}
                         <li style="border: none; " class="list-group-item"> 
-                            <button style="cursor:pointer;float:left; width:95%;padding-top:5px;padding-bottom:5px;padding-left:20px;border:none;background-color:#f2f2f2;box-shadow: 3px 3px 3px #cecece;" type="submit" name="viewUser" value="{{post.profile.user.id}}">
+                            <div class="post">
+                                <a class="profileLink" href="{% url 'public_profile' post.profile.user.id %}">
                                 {% if post.profile.photo %}
                                     <img style="border-radius: 50%; width:50px; float:left;" src="{{post.profile.photo.url}}" />
                                 {% else %}
                                     <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
                                 {% endif %}
-                                <p style="padding-left:15px;float:left;margin-top:10px;">{{post.profile.user.first_name}}&nbsp;{{post.profile.user.last_name}}</p>
+                                    <p style="padding-left:15px;float:left;margin-top:10px;">{{post.profile.user.first_name}}&nbsp;{{post.profile.user.last_name}}</p>
+                                </a>
                                 <p class="text-muted" style="padding-left:15px;float:left;margin-top:10px;">{{post.datePosted}}</p>
                                 <br />
                                 {% if post.picture %}
@@ -167,7 +166,7 @@
                                 {% endif %}
                                 <hr class="my-4" style="width:80%;" />
                                 <p>{{post.postContent}}</p>
-                            </button>
+                            </div>
                             <form action="{% url 'feed' %}" method="post"> {% csrf_token %}
                                 <button style="float:left;width:5%;padding-top:5px;padding-bottom:5px;" class="btn btn-danger" type="submit" name="deletePost" value="{{post.id}}">
                                     &#x2717;
@@ -204,9 +203,8 @@
             </button> 
             {% endif %}
         </div>
-        <div class="col">
-                
-        </div>
+
+        <div class="col"></div>
     </div>
 </div>
     
