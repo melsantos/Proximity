@@ -78,15 +78,15 @@
     }
 
     .post {
-        cursor:pointer;width:100%;
-        padding-top:5px;
+        width:100%;
+        padding-top:10px;
         padding-bottom:5px;
         padding-left:20px;
         padding-right:20px;
-        border:none;
-        background-color:#f2f2f2;
-        box-shadow: 3px 3px 3px #cecece;
-        text-align:center;
+        
+        background-color: white;
+        text-align:left;
+        overflow-wrap:break-word;
     }
 
     .profileLink {
@@ -112,6 +112,52 @@
       background: lightgray; 
       border-radius: 10px;
     }
+
+    /* CSS animations from https://github.com/IanLunn/Hover#hovercss */
+    .hvr-icon-grow {
+      display: inline-block;
+      vertical-align: middle;
+      -webkit-transform: perspective(1px) translateZ(0);
+      transform: perspective(1px) translateZ(0);
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+      -webkit-transition-duration: 0.3s;
+      transition-duration: 0.3s;
+    }
+    .hvr-icon-grow .hvr-icon {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-transition-duration: 0.3s;
+      transition-duration: 0.3s;
+      -webkit-transition-property: transform;
+      transition-property: transform;
+      -webkit-transition-timing-function: ease-out;
+      transition-timing-function: ease-out;
+    }
+    .hvr-icon-grow:hover .hvr-icon, .hvr-icon-grow:focus .hvr-icon{
+      -webkit-transform: scale(1.2) translateZ(0);
+      transform: scale(1.2) translateZ(0);
+    }
+    .hvr-icon-grow:active .hvr-icon {
+      -webkit-transform: scale(0.9);
+      transform: scale(0.9);
+    }
+    .speech-bubble {
+	    position: relative;
+	    background: #E8E8E8;
+    }
+    .speech-bubble:after {
+	    content: '';
+	    position: absolute;
+	    left: 0;
+        top:0;
+	    width: 0;
+	    height: 0;
+	    border: 10px solid transparent;
+	    border-right-color: #E8E8E8;
+	    border-left: 0;
+	    border-top: 0;
+	    margin-left: -10px;
+    }
 </style>
 
 <div class="container-fluid" style="height:85%">
@@ -130,7 +176,7 @@
                     <a class="nav-link" data-toggle="tab" role="tab" id="personal-tab" aria-controls="personal" aria-selected="false" href="#personal">My Posts</a>
                 </li>
             </ul>
-            <div class="tab-content card" id="myTabContent">
+            <div class="tab-content card" id="myTabContent" >
                 <div class="card-body tab-pane fade show active" style="height:100%;overflow-y:auto;" id="nearby" role="tabpanel" aria-labelledby="nearby-tab">
                     <ul class="list-group list-group-flush">
                     {% for post in nearbyPosts %}
@@ -139,7 +185,7 @@
                     </ul> 
                 </div>
                 <div class="card-body tab-pane fade" style="height:100%;overflow-y:auto;" id="following" role="tabpanel" aria-labelledby="following-tab">             
-                    <ul class="list-group list-group-flush">
+                    <ul class="list-group list-group-flush bg-transparent">
                     {% for post in followingPosts %}
                         {% include 'pages/post.html' with post=post %}
                     {% endfor %}
@@ -148,30 +194,47 @@
                 <div class="card-body tab-pane fade" style="height:100%;overflow-y:auto;" id="personal" role="tabpanel" aria-labelledby="personal-tab">
                     <ul class="list-group list-group-flush">
                     {% for post in personalPosts %}
-                        <li style="border: none; " class="list-group-item"> 
+                        <li style="border: none " class="list-group-item"> 
                             <div class="post">
-                                <a class="profileLink" href="{% url 'public_profile' post.profile.user.id %}">
-                                {% if post.profile.photo %}
-                                    <img style="border-radius: 50%; width:50px; float:left;" src="{{post.profile.photo.url}}" />
-                                {% else %}
-                                    <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
-                                {% endif %}
-                                    <p style="padding-left:15px;float:left;margin-top:10px;">{{post.profile.user.first_name}}&nbsp;{{post.profile.user.last_name}}</p>
-                                </a>
-                                <p class="text-muted" style="padding-left:15px;float:left;margin-top:10px;">{{post.datePosted}}</p>
-                                <br />
-                                {% if post.picture %}
-                                <hr class="my-3" style="width:80%;" />
-                                    <img style="border-radius: 10%;height: 230px; width:230px;" src="{{post.picture.url}}" />
-                                {% endif %}
-                                <hr class="my-4" style="width:80%;" />
-                                <p>{{post.postContent}}</p>
+                                <div class="row">
+                                    <div class="col-1 pr-1">
+                                    <a class="profileLink" href="{% url 'public_profile' post.profile.user.id %}">
+                                    {% if post.profile.photo %}
+                                        <img style="border-radius: 50%; width:50px;" src="{{post.profile.photo.url}}" />
+                                    {% else %}
+                                        <img style="border-radius: 50%; width:50px;" src="pages/media/profile_photos/default.jpg" />
+                                    {% endif %}
+                                    </a>
+                                    </div>
+                                    <div class="col-11 pl-1">
+                                        <div class="row" style="text-align:left">
+                                            <div class="col">
+                                                <a href="{% url 'public_profile' post.profile.user.id %}" style="color:blue">{{post.profile.user.first_name}}&nbsp;{{post.profile.user.last_name}}</a>
+                                            </div>
+                                            <div class="col" style="text-align:right">
+                                                <form style="margin:0" action="{% url 'feed' %}" method="post"> {% csrf_token %}
+                                                    <button class="btn btn-danger" style="padding:1px;" type="submit" name="deletePost" value="{{post.id}}">
+                                                        <i class="material-icons">clear</i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                            <div class="w-100"></div>
+                                            <div class="col">
+                                                <small class="text-muted">{{post.datePosted}}</small>
+                                            </div>
+                                            <div class="col">
+                                                
+                                            </div>
+                                        </div>
+                                        <div class="w-100"></div>
+                                    <p class="border-top" style="margin-top:0.5em; padding-top:0.5em; margin-bottom:0">{{post.postContent}}</p>
+                                    {% if post.picture %}
+                                        <img class="m-1" style="border-radius:2%; height:230px; width:230px; text-align:center" src="{{post.picture.url}}" />
+                                    {% endif %}
+                                    </div>
+                                </div>
                             </div>
-                            <form action="{% url 'feed' %}" method="post"> {% csrf_token %}
-                                <button style="float:left;width:5%;padding-top:5px;padding-bottom:5px;" class="btn btn-danger" type="submit" name="deletePost" value="{{post.id}}">
-                                    &#x2717;
-                                </button>
-                            </form>
+                            
                         </li>
                     {% endfor %}
                     </ul>
@@ -248,7 +311,7 @@
                     <div class="form-group shadow-textarea">
                         <textarea id="postContent" name="postContent" style="width:100%; border-radius:.25rem; border:1px solid #ced4da; 
                                     box-shadow:0px 2px 5px 0px rgba(0,0,0,0.16), 0px 2px 10px 0px rgba(0,0,0,0.12) !important;" 
-                                    placeholder="Enter post content here..." maxlength="300" rows="4" ></textarea>                       
+                                    placeholder="What's on your mind?" maxlength="300" rows="4" ></textarea>                       
                     </div>
                 </div>
                 <div class="modal-footer">   
@@ -300,5 +363,4 @@
             preview.removeChild(preview.firstChild);
         }
     }
-
 </script>

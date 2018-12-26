@@ -24,7 +24,11 @@ class Post(models.Model):
         return '%s\'s post - %s' % (self.profile.user.get_full_name(), self.datePosted.strftime("%x %X"))
 
     def get_comments(self):
-        return Comment.objects.filter(post=self.id)
+        return Comment.objects.filter(post=self.id).order_by('datePosted')
+
+    # returns the three most recent comments
+    def get_comments_three(self):
+        return Comment.objects.filter(post=self.id).order_by('-datePosted')[0:3]
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)

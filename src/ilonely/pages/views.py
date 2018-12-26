@@ -27,6 +27,7 @@ from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
 from instagram.client import InstagramAPI
 from io import BytesIO
+from pages.forms import CommentForm
 from pages.geo import getNearby, getNearbyEvents
 from pages.models import Profile, Follow, Block, Thread, Message, Post, Event
 from marketplace.models import Product
@@ -91,13 +92,22 @@ def user_home_view(request):
 
     me = User.objects.get(pk=request.user.id)
     myProfile = Profile.objects.get(user = me)
+    
 
     if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
         if request.POST.get('deletePost'):
             postid = request.POST['deletePost']
             p = Post.objects.get(pk = postid)
             p.picture.delete(save=True)
             p.delete()
+        elif request.POST.get('postComment'):
+            if comment_form.is_valid():
+                comment = comment_form.save()
+                comment.profile = myProfile
+                comment.post = Post.objects.get(pk = request.POST['postComment'])
+                comment.save()
+                return redirect('user_home')
         else:   
             igPicURL = request.POST.get('ig_media', None)
             myPost = request.POST.get('postContent', '')  
@@ -113,6 +123,7 @@ def user_home_view(request):
                     filename = fs.save(myPic.name, myPic)
                 p = Post(profile=myProfile, postContent=myPost, picture=myPic)
             p.save()
+            return redirect('user_home')
 
     #posts of people I follow
     followSet = User.objects.filter(pk__in = Follow.objects.filter(userFollowing = me).values_list('user'))
@@ -136,9 +147,11 @@ def user_home_view(request):
     # Instagram
     code = request.GET.get('code',None)
     media_urls = get_media(code)
+    comment_form = CommentForm()
 
     return render(request, 'pages/user_home.html',
                     {
+                        'form': comment_form,
                         'title' : 'User Home', 
                         'followingPosts' : followingPosts, 
                         'nearbyPosts' : nearbyPosts,
@@ -147,6 +160,10 @@ def user_home_view(request):
                         'ig_media_urls' : media_urls,
                     }
                   )
+
+def post(requets, postid):
+    post = Post.objects.get(pk = postid)
+    return render(requets, 'pages/post_page.html', {'post':post})
 
 @login_required(login_url="home")
 def set_location(request): 

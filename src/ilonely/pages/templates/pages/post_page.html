@@ -1,0 +1,86 @@
+{% include 'pages/base.html' %}
+<style>
+.post {
+    width:100%;
+    padding-top:10px;
+    padding-bottom:5px;
+    padding-left:20px;
+    padding-right:20px;
+    background-color: white;
+    text-align:left;
+    overflow-wrap:break-word;
+}
+.speech-bubble {
+	    position: relative;
+	    background: #E8E8E8;
+}
+.speech-bubble:after {
+	content: '';
+	position: absolute;
+	left: 0;
+    top:0;
+	width: 0;
+	height: 0;
+	border: 10px solid transparent;
+	border-right-color: #E8E8E8;
+	border-left: 0;
+	border-top: 0;
+	margin-left: -10px;
+}
+</style>
+<div class="container">
+<div class="row">
+    <div class="col"></div>
+    <div class="col-10">
+    <div class="post">
+        <div class="row">
+            <div class="col-1 pr-1">
+            <a class="profileLink" href="{% url 'public_profile' post.profile.user.id %}">
+            {% if post.profile.photo %}
+                <img style="border-radius: 50%; width:50px;" src="{{post.profile.photo.url}}" />
+            {% else %}
+                <img style="border-radius: 50%; width:50px;" src="pages/media/profile_photos/default.jpg" />
+            {% endif %}
+            </a>
+            </div>
+            <div class="col-11 pl-1">
+                <div class="row" style="text-align:left">
+                    <div class="col">
+                        <a href="{% url 'public_profile' post.profile.user.id %}" style="color:blue">{{post.profile.user.first_name}}&nbsp;{{post.profile.user.last_name}}</a>
+                    </div>
+                    <div class="col"></div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <small class="text-muted">{{post.datePosted}}</small>
+                    </div>
+                    <div class="col"></div>
+                </div>
+                <div class="w-100"></div>
+            <p class="border-top" style="margin-top:0.5em; padding-top:0.5em; margin-bottom:0">{{post.postContent}}</p>
+            {% if post.picture %}
+            <div style="text-align:center">
+                <img class="m-1" style="border-radius:2%; height:230px; width:230px;" src="{{post.picture.url}}" />
+            </div>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {% if post.get_comments %}
+        <div class="row">
+            <div class="col-1"></div>
+            <div class="col-11">
+            <ul class="show list-group" id="post{{post.id}}">
+                {% for comment in post.get_comments %}
+                {% include "pages/comment.html" with comment=comment %}
+                {% endfor %}            
+            </ul>
+            </div>
+        </div>
+    {% endif %}
+    </div>
+    <div class="col"></div>
+</div>
+</div>
+{% block content %}
+{% endblock %}

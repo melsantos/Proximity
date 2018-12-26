@@ -182,6 +182,9 @@
     <Content Include="pages\templates\pages\post.html">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="pages\templates\pages\post_page.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="pages\templates\pages\public_profile.html" />
     <Content Include="entry\templates\registration\register.html" />
     <Content Include="entry\templates\registration\success.html">

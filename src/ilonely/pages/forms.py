@@ -2,7 +2,18 @@ from django import forms
 from postman.forms import *
 from django import forms
 
-from pages.models import Document
+from pages.models import Document, Comment
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('commentContent',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['commentContent'].widget.attrs.update({'class':'form-control'},
+                                                          rows="1",
+                                                          placeholder="Got something to say?")
 
 class CustomWriteForm(WriteForm):
     def __init__(self, *args, **kwargs):

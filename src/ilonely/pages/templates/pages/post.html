@@ -1,32 +1,101 @@
-<li style="border: none; " class="list-group-item"> 
+<li style="" class="list-group-item bg-transparent"> 
     <div class="post">
-        <a class="profileLink" href="{% url 'public_profile' post.profile.user.id %}">
-        {% if post.profile.photo %}
-            <img style="border-radius: 50%; width:50px; float:left;" src="{{post.profile.photo.url}}" />
-        {% else %}
-            <img style="border-radius: 50%; width:50px; float:left;" src="pages/media/profile_photos/default.jpg" />
-        {% endif %}
-            <p style="padding-left:15px;float:left;margin-top:10px;">{{post.profile.user.first_name}}&nbsp;{{post.profile.user.last_name}}</p>
-        </a>
-        <p class="text-muted" style="padding-left:15px;float:left;margin-top:10px;">{{post.datePosted}}</p>
-        <br />
-        {% if post.picture %}
-        <hr class="my-3" style="width:80%;" />
-            <img style="border-radius: 10%;height: 230px; width:230px;" src="{{post.picture.url}}" />
-        {% endif %}
-        <hr class="my-4" style="width:80%;" />
-        <p>{{post.postContent}}</p>
-        {% if post.get_comments %}
-        <button class="btn btn-info" data-toggle="collapse" type="button" data-target=".comments">
-            Comments
-        </button>
-        {% endif %}
-        <div class="collapse comments">
-            <div class="m-2">
-            {% for comment in post.get_comments %}
-            {% include "pages/comment.html" with comment=comment %}
-            {% endfor %}
+        <div class="row">
+            <div class="col-1 pr-1">
+            <a class="profileLink" href="{% url 'public_profile' post.profile.user.id %}">
+            {% if post.profile.photo %}
+                <img style="border-radius: 50%; width:50px;" src="{{post.profile.photo.url}}" />
+            {% else %}
+                <img style="border-radius: 50%; width:50px;" src="pages/media/profile_photos/default.jpg" />
+            {% endif %}
+            </a>
             </div>
+            <div class="col-11 pl-1">
+                <div class="row" style="text-align:left">
+                    <div class="col">
+                        <a href="{% url 'public_profile' post.profile.user.id %}" style="color:blue">{{post.profile.user.first_name}}&nbsp;{{post.profile.user.last_name}}</a>
+                    </div>
+                    <div class="col"></div>
+                    <div class="w-100"></div>
+                    <div class="col">
+                        <small class="text-muted">{{post.datePosted}}</small>
+                    </div>
+                    <div class="col"></div>
+                </div>
+                <div class="w-100"></div>
+            <p class="border-top" style="margin-top:0.5em; padding-top:0.5em; margin-bottom:0">{{post.postContent}}</p>
+            {% if post.picture %}
+            <div style="text-align:center">
+                <img class="m-1" style="border-radius:2%; height:230px; width:230px; text-align:center" src="{{post.picture.url}}" />
+            </div>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+    <!-- Post's comment(s) -->
+    {% if post.get_comments_three %}
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-11">
+        <ul class="show list-group" id="post{{post.id}}">
+            {% for comment in post.get_comments_three %}
+            {% include "pages/comment.html" with comment=comment %}
+            {% endfor %}            
+        </ul>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Post a comment form -->
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-11">
+        <ul class="show list-group" id="comment{{post.id}}">
+            <li class="list-group-item rounded bg-transparent" style="text-align:left;">
+                <form method="POST" action="{% url 'feed' %}" style="margin-bottom:0" name="commentForm">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-1">
+                        <a class="profileLink" href="{% url 'public_profile' user.id %}">
+                        {% if user.profile.photo %}
+                            <img style="border-radius: 50%; width:40px;" src="{{user.profile.photo.url}}" />
+                        {% else %}
+                            <img style="border-radius: 50%; width:50px;" src="pages/media/profile_photos/default.jpg" />
+                        {% endif %}
+                        </a>
+                    </div>
+                    <div class="col-10" style="padding-right:0">
+                        {{ form.commentContent }}
+                    </div>
+                    <div class="col-1" style="display:flex; align-items:center">
+                        <label class="hvr-icon-grow" for="postCom{{post.id}}" style="margin:0">
+                            <i class="material-icons hvr-icon" style="font-size:34px; color:slategray">add_comment</i>
+                        </label>
+                        <button style="display:none" type="submit" id="postCom{{post.id}}" name="postComment" value="{{post.id}}">
+                            Comment
+                        </button>
+                    </div>
+                </div>
+                </form>
+            </li>
+        </ul>
+        </div>
+    </div>
+    
+    <!-- Load more comments display -->
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-11">
+        <ul class="show list-group" id="comment{{post.id}}">
+            {% if post.get_comments.count > 3 %}
+            <li class="list-group-item bg-transparent" style="border:none; padding-top:0; text-align:left">
+                <div class="row"></div>
+                <small style="float:right">
+                    <a href="{% url 'post' post.id %}">Load previous comments</a>
+                </small>
+            </li>
+            {% endif %}
+        </ul>
         </div>
     </div>
 </li>

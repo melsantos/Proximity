@@ -1,5 +1,30 @@
-<div class="card m-2 card-body bg-light">
-    {{ comment.profile.user.get_full_name }}
-    <br />
-    {{ comment.commentContent }}
-</div>
+<li class="list-group-item bg-transparent" style="border:none; text-align:left">
+    <div class="row">
+        <div class="col-1">
+        <a class="profileLink" href="{% url 'public_profile' comment.profile.user.id %}">
+        {% if comment.profile.photo %}
+            <img style="border-radius: 50%; width:40px;" src="{{comment.profile.photo.url}}" />
+        {% else %}
+            <img style="border-radius: 50%; width:50px;" src="pages/media/profile_photos/default.jpg" />
+        {% endif %}
+        </a>        
+        </div>
+        
+        <div class="col-11">
+            <div class="p-2 speech-bubble shadow-sm" style="display:inline-flex; max-width:100%; border-radius: 0 1em 1em 1em; overflow-wrap:break-word">
+                <p class="w-100"style="margin:0" overflow-wrap="break-word">
+                    <a class="profileLink" href="{% url 'public_profile' comment.profile.user.id %}">
+                    <span style="color:blue">{{comment.profile.user.get_full_name }}</span>
+                    </a>
+                    <span overflow-wrap="break-word" style="margin:0">{{ comment.commentContent }}</span>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <small class="text-muted" style="float:left">{{comment.datePosted}}</small>
+        </div>
+    </div>
+</li>
