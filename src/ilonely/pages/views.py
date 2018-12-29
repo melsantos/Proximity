@@ -405,6 +405,14 @@ def public_profile(request, userid):
                 f.delete()
             except Follow.DoesNotExist:
                 f = Follow(userFollowing=me, user=blockUser)
+        elif request.POST.get('postComment'):
+            comment_form = CommentForm(request.POST)
+            if comment_form.is_valid():
+                comment = comment_form.save()
+                comment.profile = request.user.profile
+                comment.post = Post.objects.get(pk = request.POST['postComment'])
+                comment.save()
+                return redirect('public_profile', userid)
 
     profile = Profile.objects.filter(user = userid).first()
     following = Follow.objects.filter(userFollowing=User.objects.get(pk = request.user.id), user=User.objects.get(pk = userid)).exists()
@@ -417,6 +425,9 @@ def public_profile(request, userid):
     user_posts = Post.objects.filter(profile=profile).order_by('-datePosted')
     user_listings = Product.objects.filter(seller=profile).order_by('-date_created')
     user_events = (Event.objects.filter(poster=profile) | Event.objects.filter(rsvp_list=profile)).order_by('-date')
+
+    comment_form = CommentForm();
+
     return render(request, 'pages/public_profile.html', 
                 {'title': (profile.user.first_name + ' ' + profile.user.last_name), 
                 'profile' : profile,
@@ -428,6 +439,7 @@ def public_profile(request, userid):
                 'user_posts' : user_posts,
                 'user_listings' : user_listings,
                 'user_events' : user_events,
+                'form' : comment_form,
                 })
 
 @login_required(login_url="home")
