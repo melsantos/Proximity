@@ -3,7 +3,7 @@
         <div class="col-1">
         <a class="profileLink" href="{% url 'public_profile' comment.profile.user.id %}">
         {% if comment.profile.photo %}
-            <img style="border-radius: 50%; width:40px;" src="{{comment.profile.photo.url}}" />
+            <img style="border-radius: 50%; width:40px;" src="{{ comment.profile.photo.url }}" />
         {% else %}
             <img style="border-radius: 50%; width:50px;" src="pages/media/profile_photos/default.jpg" />
         {% endif %}
@@ -14,9 +14,15 @@
             <div class="p-2 speech-bubble shadow-sm" style="display:inline-flex; max-width:100%; border-radius: 0 1em 1em 1em; overflow-wrap:break-word">
                 <p class="w-100"style="margin:0" overflow-wrap="break-word">
                     <a class="profileLink" href="{% url 'public_profile' comment.profile.user.id %}">
-                    <span style="color:blue">{{comment.profile.user.get_full_name }}</span>
+                    <span style="color:blue">{{ comment.profile.user.get_full_name }}</span>
                     </a>
-                    <span overflow-wrap="break-word" style="margin:0">{{ comment.commentContent }}</span>
+                    {% if comment.is_deleted %}
+                        <small class="text-muted">Comment deleted by user</small>
+                    {% else %}
+                    <span overflow-wrap="break-word" style="margin:0">
+                        {{comment.commentContent}}
+                    </span>
+                    {% endif %}
                 </p>
             </div>
         </div>
@@ -24,7 +30,19 @@
     <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
-            <small class="text-muted" style="float:left">{{comment.datePosted}}</small>
+            <small class="text-muted" style="float:left">{{ comment.timestamp }}</small>
+            {% if comment.profile == user.profile %}
+            <form method="POST" action="{% url 'delete_comment' %}" style="margin:0">
+                {% csrf_token %}
+                <label for="com{{comment.id}}" style="margin:0">
+                    <small style="padding-left:5px; color:blue" class="delCom">
+                    
+                    </small>
+                </label>
+                <input type="hidden" name="next" value="{{ request.path }}"/>
+                <button type="submit" id ="com{{comment.id}}" name="delComment" value="{{comment.id}}" hidden>Delete</button>
+            </form>
+            {% endif %}
         </div>
     </div>
 </li>

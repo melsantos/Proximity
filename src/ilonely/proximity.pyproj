@@ -64,7 +64,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="pages\geo.py" />
-    <Compile Include="pages\migrations\__init__.py" />
+    <Compile Include="pages\static\migrations\__init__.py" />
     <Compile Include="pages\models.py" />
     <Compile Include="pages\signals.py" />
     <Compile Include="pages\socialauth.py" />
@@ -99,7 +99,7 @@
     <Folder Include="media\profile_photos\" />
     <Folder Include="pages\" />
     <Folder Include="pages\media\profile_photos\" />
-    <Folder Include="pages\migrations\" />
+    <Folder Include="pages\static\migrations\" />
     <Folder Include="pages\media\" />
     <Folder Include="pages\fixtures\" />
     <Folder Include="pages\templatetags\" />

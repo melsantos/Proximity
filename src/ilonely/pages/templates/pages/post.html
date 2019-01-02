@@ -60,7 +60,7 @@
         <div class="col-11">
         <ul class="show list-group" id="comment{{post.id}}">
             <li class="list-group-item rounded bg-transparent" style="text-align:left;">
-                <form method="POST" style="margin-bottom:0" name="commentForm">
+                <form action="{% url 'post_comment' %}" method="POST" style="margin-bottom:0" name="commentForm">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-1">
@@ -84,6 +84,7 @@
                         </button>
                     </div>
                 </div>
+                <input type="hidden" name="next" value="{{ request.path }}"/>
                 </form>
             </li>
         </ul>

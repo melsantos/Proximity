@@ -33,6 +33,14 @@
         height:100vh;
         padding-top: 50px;
     }
+    .delCom:after {
+        content: 'Delete';
+    } 
+    .delCom:hover:after {
+        content: 'Delete?';
+        text-decoration:underline;
+        cursor:pointer;
+    } 
     </style>
 
     {% block extrahead %}{% endblock %}

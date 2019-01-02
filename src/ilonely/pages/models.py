@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth.models import User
 
 class Profile(models.Model):
@@ -26,18 +27,77 @@ class Post(models.Model):
     def get_comments(self):
         return Comment.objects.filter(post=self.id).order_by('datePosted')
 
-    # returns the three most recent comments
     def get_comments_three(self):
-        return Comment.objects.filter(post=self.id).order_by('-datePosted')[0:3]
+        return Comment.objects.filter(post=self.id).order_by('datePosted')[0:3]
+
+    def timestamp(self):
+        posted_when = timezone.now() - self.datePosted        
+        hours = posted_when.days * 24 + posted_when.seconds // 3600
+        minutes = posted_when.seconds//60
+        weeks = posted_when.days // 7
+
+        if posted_when.days < 1:
+            if hours < 1:
+                if minutes < 1:
+                    return 'Just now'
+                if minutes == 1:
+                    return 'A minute ago'
+                else:
+                    return '%d minutes ago' % minutes
+            else:
+                if hours == 1:
+                    return '1 hour ago'
+                else:
+                    return '%s hours ago' % hours
+        elif posted_when.days < 7:
+            return '%s days ago' % posted_when.days
+        elif posted_when.days < 30:
+            if weeks == 1:
+                return '1 week ago'
+            else:
+                return '%s weeks ago' % weeks
+        else:
+            return 'A long time ago'
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
     commentContent = models.TextField()
     datePosted = models.DateTimeField(auto_now_add=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
         return '%s\'s comment on %s\'s Post' % (self.profile.user.get_full_name(), self.post.profile.user.get_full_name() )
+
+    def timestamp(self):
+        posted_when = timezone.now() - self.datePosted        
+        hours = posted_when.days * 24 + posted_when.seconds // 3600
+        minutes = posted_when.seconds//60
+        weeks = posted_when.days // 7
+
+        if posted_when.days < 1:
+            if hours < 1:
+                if minutes < 1:
+                    return 'Just now'
+                if minutes == 1:
+                    return 'A minute ago'
+                else:
+                    return '%d minutes ago' % minutes
+            else:
+                if hours == 1:
+                    return '1 hour ago'
+                else:
+                    return '%s hours ago' % hours
+        elif posted_when.days < 7:
+            return '%s days ago' % posted_when.days
+        elif posted_when.days < 30:
+            if weeks == 1:
+                return '1 week ago'
+            else:
+                return '%s weeks ago' % weeks
+        else:
+            return 'A long time ago'
+        
 
 class Follow(models.Model):
     userFollowing = models.ForeignKey(User, on_delete=models.PROTECT, related_name="userFollowing")

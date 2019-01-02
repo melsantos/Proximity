@@ -29,7 +29,7 @@ from instagram.client import InstagramAPI
 from io import BytesIO
 from pages.forms import CommentForm
 from pages.geo import getNearby, getNearbyEvents
-from pages.models import Profile, Follow, Block, Thread, Message, Post, Event
+from pages.models import Profile, Follow, Block, Thread, Message, Post, Event, Comment
 from marketplace.models import Product
 from urllib.request import urlopen
 import json
@@ -101,13 +101,6 @@ def user_home_view(request):
             p = Post.objects.get(pk = postid)
             p.picture.delete(save=True)
             p.delete()
-        elif request.POST.get('postComment'):
-            if comment_form.is_valid():
-                comment = comment_form.save()
-                comment.profile = myProfile
-                comment.post = Post.objects.get(pk = request.POST['postComment'])
-                comment.save()
-                return redirect('user_home')
         else:   
             igPicURL = request.POST.get('ig_media', None)
             myPost = request.POST.get('postContent', '')  
@@ -164,6 +157,35 @@ def user_home_view(request):
 def post(requets, postid):
     post = Post.objects.get(pk = postid)
     return render(requets, 'pages/post_page.html', {'post':post})
+
+def delete_comment(request):
+
+    if request.method == 'POST':
+        if request.POST.get('delComment'):
+            id = request.POST.get('delComment')
+            comment = Comment.objects.get(pk=id)
+            comment.is_deleted = True
+            comment.save()
+
+    # code taken from https://stackoverflow.com/a/35796559 for redirection to url that sent request
+    next = request.POST.get('next', '/')
+    return HttpResponseRedirect(next)
+
+def post_comment(request):
+    me = User.objects.get(pk=request.user.id)
+    myProfile = Profile.objects.get(user = me)    
+
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if request.POST.get('postComment'):
+            if comment_form.is_valid():
+                comment = comment_form.save()
+                comment.profile = myProfile
+                comment.post = Post.objects.get(pk = request.POST['postComment'])
+                comment.save()
+        
+    next = request.POST.get('next', '/')
+    return HttpResponseRedirect(next)
 
 @login_required(login_url="home")
 def set_location(request): 
@@ -405,14 +427,6 @@ def public_profile(request, userid):
                 f.delete()
             except Follow.DoesNotExist:
                 f = Follow(userFollowing=me, user=blockUser)
-        elif request.POST.get('postComment'):
-            comment_form = CommentForm(request.POST)
-            if comment_form.is_valid():
-                comment = comment_form.save()
-                comment.profile = request.user.profile
-                comment.post = Post.objects.get(pk = request.POST['postComment'])
-                comment.save()
-                return redirect('public_profile', userid)
 
     profile = Profile.objects.filter(user = userid).first()
     following = Follow.objects.filter(userFollowing=User.objects.get(pk = request.user.id), user=User.objects.get(pk = userid)).exists()
