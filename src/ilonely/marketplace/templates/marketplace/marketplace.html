@@ -1,87 +1,13 @@
 {% extends "pages/base.html" %}
+{% load static %}
 
 {% block extrahead %}
-{% load static %}
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="{% static 'css/animate.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'marketplace/css/marketplace.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'pages/css/animate.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'pages/css/hover.css' %}"/>
 {% endblock %}
 
-
 {% block content %}
-
-<style>
-.material-icons {
-    vertical-align: middle;
-}
-
-.productButton {
-    display: inline-block;
-    height: 280px;
-    width: 200px;
-    background-color: lightgray;
-    border-radius: 3px;
-    text-decoration: none;
-    box-shadow: 3px 3px 3px #cecece;
-    border: 1px solid lightgray;
-    margin:0.3em;
-    margin-bottom:1.3em;
-    
-/* Modified and taken from https://github.com/IanLunn/Hover */
-    -webkit-transform: perspective(1px) translateZ(0);
-    transform: perspective(1px) translateZ(0);
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    -webkit-transition-property: transform;
-    transition-property: transform;
-    -webkit-transition-timing-function: ease-out;
-    transition-timing-function: ease-out;
-}
-
-.productButton:hover {
-    -webkit-transform: translateY(-8px);
-    transform: translateY(-8px);
-}
-
-.productButton:active {
-    -webkit-transform: scale(0.9);
-    transform: scale(0.9);
-}
-
-.productUpper {
-     width:100%; 
-     height: 70%; 
-     overflow:hidden; 
-     border-radius:3px 3px 0 0;
-     background-color:black;
-     display:flex; 
-     align-items:center;
-}
-
-.productLower {
-     width:100%; 
-     height: 30%; 
-     background-color:white; 
-     color:black;
-     border-radius: 0 0 3px 3px;
-}
-
-.priceTag {
-    z-index:10; 
-    position:absolute; 
-    background-color:rgba(0, 0, 0, 0.75);
-    color:white;
-    border-radius:5px;
-    font-size:14pt;
-}
-
-.nobullet {
-    list-style-type: none;
-}
-
-#uploadProduct {
-    animation-duration: 0.5s;
-}
-</style>
 
 <div class="container-fluid mt-4" style="width:80%; height:90%">
 
@@ -101,7 +27,7 @@
                     <div class="mx-auto">
                         <div style="text-align:left">
                             <form method="GET" action="{% url 'marketplace' %}">
-                                <!-- Sort by new, price  -->
+                                <!-- Sort by new, price,  -->
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
                                         <label class="input-group-text">Sort By</label>

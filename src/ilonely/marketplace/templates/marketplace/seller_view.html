@@ -1,81 +1,13 @@
-
 {% extends "pages/base.html" %}
+{% load static %}
 
 {% block extrahead %}
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="{% static 'marketplace/css/marketplace.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'pages/css/hover.css' %}"/>
 {% endblock %}
 
 {% block content %}
-<style>
-.material-icons {
-    vertical-align: middle;
-}
-
-.profileButton {
-    cursor:pointer;
-    color: black;
-    padding:10px;
-}
-
-.profileButton:hover {
-    color: black;
-}
-
-.profileImage {
-    border-radius: 50%; 
-    width:50px; 
-    float:left;
-}
-
-/* Modified and taken from https://github.com/IanLunn/Hover */
-.hvr-icon-sink {
-    display: inline-block;
-    vertical-align: middle;
-    -webkit-transform: perspective(1px) translateZ(0);
-    transform: perspective(1px) translateZ(0);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-}
-.hvr-icon-sink .hvr-icon {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    -webkit-transition-property: transform;
-    transition-property: transform;
-    -webkit-transition-timing-function: ease-out;
-    transition-timing-function: ease-out;
-}
-.hvr-icon-sink:hover .hvr-icon, .hvr-icon-sink:focus .hvr-icon, .hvr-icon-sink:active .hvr-icon {
-    -webkit-transform: translateY(4px);
-    transform: translateY(4px);
-}
-
-.hvr-icon-grow {
-    display: inline-block;
-    vertical-align: middle;
-    -webkit-transform: perspective(1px) translateZ(0);
-    transform: perspective(1px) translateZ(0);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-}
-.hvr-icon-grow .hvr-icon {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    -webkit-transition-property: transform;
-    transition-property: transform;
-    -webkit-transition-timing-function: ease-out;
-    transition-timing-function: ease-out;
-}
-.hvr-icon-grow:hover .hvr-icon, .hvr-icon-grow:focus .hvr-icon, .hvr-icon-grow:active .hvr-icon {
-    -webkit-transform: scale(1.2) translateZ(0);
-    transform: scale(1.2) translateZ(0);
-}
-</style>
 
 <div class="container mx-auto card shadow-sm">
     <form method="POST" style="margin-bottom:0" enctype="multipart/form-data">

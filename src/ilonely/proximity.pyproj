@@ -64,7 +64,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="pages\geo.py" />
-    <Compile Include="pages\static\migrations\__init__.py" />
+    <Compile Include="pages\migrations\0001_initial.py" />
+    <Compile Include="pages\migrations\0002_auto_20190101_1956.py" />
+    <Compile Include="pages\migrations\0003_auto_20190101_1956.py" />
+    <Compile Include="pages\migrations\0004_auto_20190101_1956.py" />
+    <Compile Include="pages\migrations\__init__.py" />
     <Compile Include="pages\models.py" />
     <Compile Include="pages\signals.py" />
     <Compile Include="pages\socialauth.py" />
@@ -84,11 +88,16 @@
   <ItemGroup>
     <Folder Include="entry\" />
     <Folder Include="entry\migrations\" />
+    <Folder Include="entry\static\" />
+    <Folder Include="entry\static\entry\" />
+    <Folder Include="entry\static\entry\img\" />
     <Folder Include="entry\templates\" />
     <Folder Include="ilonely\" />
     <Folder Include="marketplace\" />
     <Folder Include="marketplace\migrations\" />
     <Folder Include="marketplace\static\" />
+    <Folder Include="marketplace\static\marketplace\css\" />
+    <Folder Include="marketplace\static\marketplace\" />
     <Folder Include="marketplace\templates\" />
     <Folder Include="marketplace\templates\marketplace\" />
     <Folder Include="marketplace\__pycache__\" />
@@ -99,9 +108,12 @@
     <Folder Include="media\profile_photos\" />
     <Folder Include="pages\" />
     <Folder Include="pages\media\profile_photos\" />
-    <Folder Include="pages\static\migrations\" />
+    <Folder Include="pages\migrations\" />
+    <Folder Include="pages\migrations\__pycache__\" />
+    <Folder Include="pages\static\pages\css\bootstrap\" />
     <Folder Include="pages\media\" />
     <Folder Include="pages\fixtures\" />
+    <Folder Include="pages\static\pages\" />
     <Folder Include="pages\templatetags\" />
     <Folder Include="pages\templates\" />
     <Folder Include="pages\templates\pages\" />
@@ -122,23 +134,20 @@
     <Folder Include="pages\static\admin\js\vendor\select2\" />
     <Folder Include="pages\static\admin\js\vendor\select2\i18n\" />
     <Folder Include="pages\static\admin\js\vendor\xregexp\" />
-    <Folder Include="pages\static\css\" />
-    <Folder Include="pages\static\css\img\" />
-    <Folder Include="pages\static\js\" />
+    <Folder Include="pages\static\pages\css\" />
+    <Folder Include="pages\static\pages\css\img\" />
+    <Folder Include="pages\static\pages\js\" />
     <Folder Include="pages\static\postman\" />
     <Folder Include="pages\static\postman\css\" />
-    <Folder Include="pages\static\leaflet\" />
-    <Folder Include="pages\static\leaflet\draw\" />
-    <Folder Include="pages\static\leaflet\draw\images\" />
-    <Folder Include="pages\static\leaflet\images\" />
-    <Folder Include="pages\static\leaflet\leaflet\" />
-    <Folder Include="pages\static\leaflet\leaflet\images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include=".env">
       <SubType>Code</SubType>
     </Content>
     <Content Include="db.sqlite3" />
+    <Content Include="marketplace\static\marketplace\css\marketplace.css">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="marketplace\templates\marketplace\listing.html" />
     <Content Include="marketplace\templates\marketplace\marketplace.html" />
     <Content Include="marketplace\templates\marketplace\seller_view.html" />
@@ -160,13 +169,24 @@
     <Content Include="pages\fixtures\original.json" />
     <Content Include="pages\media\profile_photos\default.jpg" />
     <Content Include="pages\media\profile_photos\ryan.jpg" />
-    <Content Include="pages\static\css\img\google_sign_in.png" />
-    <Content Include="pages\static\css\img\people-connecting.jpg" />
-    <Content Include="pages\static\js\popper.min.js" />
-    <Content Include="pages\static\js\datepair.js" />
-    <Content Include="pages\static\js\jquery.datepair.js" />
-    <Content Include="pages\static\js\jquery.timepicker.css" />
-    <Content Include="pages\static\js\jquery.timepicker.js" />
+    <Content Include="pages\migrations\__pycache__\0001_initial.cpython-36.pyc" />
+    <Content Include="pages\migrations\__pycache__\0002_auto_20190101_1956.cpython-36.pyc" />
+    <Content Include="pages\migrations\__pycache__\0003_auto_20190101_1956.cpython-36.pyc" />
+    <Content Include="pages\migrations\__pycache__\0004_auto_20190101_1956.cpython-36.pyc" />
+    <Content Include="pages\migrations\__pycache__\__init__.cpython-36.pyc" />
+    <Content Include="pages\static\pages\css\animate.css" />
+    <Content Include="pages\static\pages\css\bootstrap\bootstrap-datetimepicker.min.css" />
+    <Content Include="pages\static\pages\css\hover.css">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="pages\static\pages\css\feed.css">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="entry\static\entry\img\google_sign_in.png" />
+    <Content Include="pages\static\pages\css\img\people-connecting.jpg" />
+    <Content Include="pages\static\pages\css\bootstrap\jquery-ui.min.css" />
+    <Content Include="pages\static\pages\js\popper.min.js" />
+    <Content Include="pages\static\pages\js\datepair.js" />
     <Content Include="pages\templates\pages\account.html" />
     <Content Include="pages\templates\pages\comment.html">
       <SubType>Code</SubType>
@@ -326,75 +346,20 @@
     <Content Include="pages\static\admin\js\vendor\xregexp\LICENSE.txt" />
     <Content Include="pages\static\admin\js\vendor\xregexp\xregexp.js" />
     <Content Include="pages\static\admin\js\vendor\xregexp\xregexp.min.js" />
-    <Content Include="pages\static\css\bootstrap-grid.css" />
-    <Content Include="pages\static\css\bootstrap-grid.css.map" />
-    <Content Include="pages\static\css\bootstrap-grid.min.css" />
-    <Content Include="pages\static\css\bootstrap-grid.min.css.map" />
-    <Content Include="pages\static\css\bootstrap-reboot.css" />
-    <Content Include="pages\static\css\bootstrap-reboot.css.map" />
-    <Content Include="pages\static\css\bootstrap-reboot.min.css" />
-    <Content Include="pages\static\css\bootstrap-reboot.min.css.map" />
-    <Content Include="pages\static\css\bootstrap.css" />
-    <Content Include="pages\static\css\bootstrap.css.map" />
-    <Content Include="pages\static\css\bootstrap.min.css" />
-    <Content Include="pages\static\css\bootstrap.min.css.map" />
-    <Content Include="pages\static\css\messaging.css" />
-    <Content Include="pages\static\css\sidebar.css" />
-    <Content Include="pages\static\js\bootstrap.bundle.js" />
-    <Content Include="pages\static\js\bootstrap.bundle.js.map" />
-    <Content Include="pages\static\js\bootstrap.bundle.min.js" />
-    <Content Include="pages\static\js\bootstrap.bundle.min.js.map" />
-    <Content Include="pages\static\js\bootstrap.js" />
-    <Content Include="pages\static\js\bootstrap.js.map" />
-    <Content Include="pages\static\js\bootstrap.min.js" />
-    <Content Include="pages\static\js\bootstrap.min.js.map" />
-    <Content Include="pages\static\js\extras.js" />
-    <Content Include="pages\static\js\jquery-3.3.1.min.js" />
-    <Content Include="pages\static\js\sidebar.js" />
+    <Content Include="pages\static\pages\css\messaging.css" />
+    <Content Include="pages\static\pages\js\bootstrap.bundle.js" />
+    <Content Include="pages\static\pages\js\bootstrap.bundle.js.map" />
+    <Content Include="pages\static\pages\js\bootstrap.bundle.min.js" />
+    <Content Include="pages\static\pages\js\bootstrap.bundle.min.js.map" />
+    <Content Include="pages\static\pages\js\bootstrap.js" />
+    <Content Include="pages\static\pages\js\bootstrap.js.map" />
+    <Content Include="pages\static\pages\js\bootstrap.min.js" />
+    <Content Include="pages\static\pages\js\bootstrap.min.js.map" />
+    <Content Include="pages\static\pages\js\extras.js" />
+    <Content Include="pages\static\pages\js\jquery-3.3.1.min.js" />
+    <Content Include="pages\static\pages\js\sidebar.js" />
     <Content Include="pages\static\postman\css\admin.css" />
     <Content Include="pages\static\postman\css\postman.css" />
-    <Content Include="pages\static\leaflet\Control.MiniMap.css" />
-    <Content Include="pages\static\leaflet\Control.MiniMap.js" />
-    <Content Include="pages\static\leaflet\draw\images\layers-2x.png" />
-    <Content Include="pages\static\leaflet\draw\images\layers.png" />
-    <Content Include="pages\static\leaflet\draw\images\marker-icon-2x.png" />
-    <Content Include="pages\static\leaflet\draw\images\marker-icon.png" />
-    <Content Include="pages\static\leaflet\draw\images\marker-shadow.png" />
-    <Content Include="pages\static\leaflet\draw\images\spritesheet-2x.png" />
-    <Content Include="pages\static\leaflet\draw\images\spritesheet.png" />
-    <Content Include="pages\static\leaflet\draw\images\spritesheet.svg" />
-    <Content Include="pages\static\leaflet\draw\leaflet.draw-src.css" />
-    <Content Include="pages\static\leaflet\draw\leaflet.draw-src.js" />
-    <Content Include="pages\static\leaflet\draw\leaflet.draw.css" />
-    <Content Include="pages\static\leaflet\draw\leaflet.draw.js" />
-    <Content Include="pages\static\leaflet\eventlistener.ie6-7.js" />
-    <Content Include="pages\static\leaflet\eventlistener.ie8.js" />
-    <Content Include="pages\static\leaflet\images\layers-2x.png" />
-    <Content Include="pages\static\leaflet\images\layers.png" />
-    <Content Include="pages\static\leaflet\images\marker-icon%402x.png" />
-    <Content Include="pages\static\leaflet\images\marker-icon-2x.png" />
-    <Content Include="pages\static\leaflet\images\marker-icon.png" />
-    <Content Include="pages\static\leaflet\images\marker-shadow.png" />
-    <Content Include="pages\static\leaflet\images\reset-view.png" />
-    <Content Include="pages\static\leaflet\images\toggle.png" />
-    <Content Include="pages\static\leaflet\images\zoom-in.png" />
-    <Content Include="pages\static\leaflet\images\zoom-out.png" />
-    <Content Include="pages\static\leaflet\leaflet-src.js" />
-    <Content Include="pages\static\leaflet\leaflet.css" />
-    <Content Include="pages\static\leaflet\leaflet.extras.js" />
-    <Content Include="pages\static\leaflet\leaflet.forms.js" />
-    <Content Include="pages\static\leaflet\leaflet.ie.css" />
-    <Content Include="pages\static\leaflet\leaflet.js" />
-    <Content Include="pages\static\leaflet\leaflet\images\layers-2x.png" />
-    <Content Include="pages\static\leaflet\leaflet\images\layers.png" />
-    <Content Include="pages\static\leaflet\leaflet\images\marker-icon-2x.png" />
-    <Content Include="pages\static\leaflet\leaflet\images\marker-icon.png" />
-    <Content Include="pages\static\leaflet\leaflet\images\marker-shadow.png" />
-    <Content Include="pages\static\leaflet\leaflet\leaflet-src.js" />
-    <Content Include="pages\static\leaflet\leaflet\leaflet.css" />
-    <Content Include="pages\static\leaflet\leaflet\leaflet.js" />
-    <Content Include="pages\static\leaflet\proj4js.js" />
-    <Content Include="pages\static\leaflet\proj4leaflet.js" />
   </ItemGroup>
   <ItemGroup>
     <InterpreterReference Include="Global|PythonCore|3.6" />

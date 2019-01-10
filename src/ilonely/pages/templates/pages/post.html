@@ -1,4 +1,6 @@
 <li style="" class="list-group-item bg-transparent"> 
+
+    <!-- Post -->
     <div class="post">
         <div class="row">
             <div class="col-1 pr-1">
@@ -40,7 +42,8 @@
             </div>
         </div>
     </div>
-    <!-- Post's comment(s) -->
+
+    <!-- Comment(s) -->
     {% if post.get_comments_three %}
     <div class="row">
         <div class="col-1"></div>
@@ -54,7 +57,7 @@
     </div>
     {% endif %}
 
-    <!-- Post a comment form -->
+    <!-- Comment form -->
     <div class="row">
         <div class="col-1"></div>
         <div class="col-11">
@@ -91,7 +94,7 @@
         </div>
     </div>
     
-    <!-- Load more comments display -->
+    <!-- Load more comments -->
     <div class="row">
         <div class="col-1"></div>
         <div class="col-11">

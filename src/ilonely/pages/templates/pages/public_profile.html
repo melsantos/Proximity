@@ -141,13 +141,15 @@ body {
     </div>
 
     <div class="row" style="width:80%">
-        <!-- Profile Picture and Message, Follow, and Block Buttons-->
+        <!-- Profile Picture -->
         <div class="col-3" align="center" style="z-index:1025; height:100%; display:flex; align-items:center">
             <div style="width:350px;">
             {% if profile.photo %}
                 <img style="border-radius:50%; border:solid 4px white; width:100%;" src="{{profile.photo.url}}" />
             {% endif %}
+
                 <hr class="my-3" style="width:75%" />
+
                 <div>
                     <div style="background-color:rgba(249, 250, 251, 1); border-radius:5px; max-height:150px; overflow:hidden" class="card w-100 p-1 mb-3 border shadow-sm">
                         <h5 class="text-mute">BIO:</h5>
@@ -155,6 +157,32 @@ body {
                         <p class="p-1" style="margin:0px; text-overflow: ellipsis; overflow-y:auto">{{profile.bio}}</p>
                     </div>
                 </div>
+
+                <!-- Message, Follow, Block Button -->
+                <form action="{% url 'public_profile' profile.user.id %}" method="post"> {% csrf_token %}
+                    <div class="btn-group mb-3 w-100">
+                        
+                        <button type="submit" class="{% if message_request %} btn btn-light {% elif pending_approval %} btn btn-warning {% else %} btn btn-primary {% endif %}" name="messageUser" value="{{profile.user.id}}">
+                            {% if message_request %} 
+                                Requested &#x2713; 
+                            {% elif pending_approval == True %} 
+                                Confirmation Pending 
+                            {% elif messagable == True %}
+                                Message
+                            {% else %}
+                                Request
+                            {% endif %}
+                            </button>
+                        <button type="submit" class="{% if following %} btn btn-light {% else %} btn btn-success {% endif %}" name="followUser" value="{{profile.user.id}}">
+                            {% if following %} Following &#x2713; {% else %} Follow {% endif %}
+                        </button>
+                        <button type="submit" class="{% if blocking %} btn btn-light {% else %} btn btn-danger {% endif %}" name="blockUser" value="{{profile.user.id}}">
+                            {% if blocking %} Blocked &#x2717; {% else %} Block {% endif %}
+                        </button>
+
+                        
+                    </div>
+                </form>
 
                 <!-- Navigation -->
                 <div class="list-group mx-auto" role="tablist">

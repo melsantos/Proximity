@@ -11,7 +11,7 @@
         </div>
         
         <div class="col-11">
-            <div class="p-2 speech-bubble shadow-sm" style="display:inline-flex; max-width:100%; border-radius: 0 1em 1em 1em; overflow-wrap:break-word">
+            <div class="p-2 speech-bubble comment shadow-sm">
                 <p class="w-100"style="margin:0" overflow-wrap="break-word">
                     <a class="profileLink" href="{% url 'public_profile' comment.profile.user.id %}">
                     <span style="color:blue">{{ comment.profile.user.get_full_name }}</span>

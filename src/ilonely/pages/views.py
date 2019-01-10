@@ -32,10 +32,8 @@ from pages.geo import getNearby, getNearbyEvents
 from pages.models import Profile, Follow, Block, Thread, Message, Post, Event, Comment
 from marketplace.models import Product
 from urllib.request import urlopen
-import json
-import os
-import random,string
-import requests
+import json, os, random, string, requests
+
 # Create your views here.
 
 INSTAGRAM_REDIRECT_URI = 'http://localhost:8000/user_home/'

@@ -1,166 +1,4 @@
-﻿<!-- Styling for post images-->
-<style>
-@media (min-width: 768px) {
-    .modal-xl {
-        width: 35%;
-        max-width:1200px;
-    }
-}
-#pc_label{
-    background-image: url("../../static/css/img/camera-logo-hi.png");
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    background-color: rgba(0,0,0,0.12);
-    cursor:pointer;
-    border-radius: 4px;
-    padding: 20px 20px;
-    margin-left:inherit;
-    margin-top: 40px;
-    position:relative;
-}
-#pc_label:hover{
-    background-color: #cecece;
-}
-#ig_link {
-    margin-left:-80px;
-    position:relative;
-}
-.customRadio {
-    display: block;
-    position: relative;
-    cursor: pointer;
-    font-size: 22px;
-}
-
-/* Hide the browser's default radio button */
-.customRadio input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-}
-
-/* Create a custom radio button */
-.checkmark {
-    position: absolute;
-    margin-top: -120px;
-    left: 270px;
-    height: 25px;
-    width: 25px;
-    background-color: #f66868;
-    border-radius: 50%;
-}
-
-.customRadio:hover input ~ .checkmark {
-    background-color: rgba(251, 90, 91, 0.77);
-}
-
-.customRadio input:checked ~ .checkmark {
-    background-color: #fb4b4c;
-}
-
-.checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-}
-
-.customRadio input:checked ~ .checkmark:after {
-    display: block;
-}
-
-.customRadio .checkmark:after {
- 	top: 9px;
-	left: 9px;
-	width: 8px;
-	height: 8px;
-	border-radius: 50%;
-	background: white;
-}
-
-.post {
-    width:100%;
-    padding-top:10px;
-    padding-bottom:5px;
-    padding-left:20px;
-    padding-right:20px;
-        
-    background-color: white;
-    text-align:left;
-    overflow-wrap:break-word;
-}
-
-.profileLink {
-    color:black;
-}
-
-.profileLink:hover{
-    color: black;
-    text-decoration: none;
-}
-
-::-webkit-scrollbar { 
-    width: 10px;
-}
-
-::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 5px lightgray;
-    border-radius: 5px;
-        
-}
-
-::-webkit-scrollbar-thumb {
-    background: lightgray; 
-    border-radius: 10px;
-}
-
-/* CSS animations from https://github.com/IanLunn/Hover#hovercss */
-.hvr-icon-grow {
-    display: inline-block;
-    vertical-align: middle;
-    -webkit-transform: perspective(1px) translateZ(0);
-    transform: perspective(1px) translateZ(0);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-}
-.hvr-icon-grow .hvr-icon {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    -webkit-transition-duration: 0.3s;
-    transition-duration: 0.3s;
-    -webkit-transition-property: transform;
-    transition-property: transform;
-    -webkit-transition-timing-function: ease-out;
-    transition-timing-function: ease-out;
-}
-.hvr-icon-grow:hover .hvr-icon, .hvr-icon-grow:focus .hvr-icon{
-    -webkit-transform: scale(1.2) translateZ(0);
-    transform: scale(1.2) translateZ(0);
-}
-.hvr-icon-grow:active .hvr-icon {
-    -webkit-transform: scale(0.9);
-    transform: scale(0.9);
-}
-.speech-bubble {
-	position: relative;
-	background: #E8E8E8;
-}
-.speech-bubble:after {
-	content: '';
-	position: absolute;
-	left: 0;
-    top:0;
-	width: 0;
-	height: 0;
-	border: 10px solid transparent;
-	border-right-color: #E8E8E8;
-	border-left: 0;
-	border-top: 0;
-	margin-left: -10px;
-}
-</style>
-
-<div class="container-fluid" style="height:85%">
+﻿<div class="container-fluid" style="height:85%">
     <div class="row" style="height:100%;">
         <div class="col"></div>
 
@@ -195,70 +33,11 @@
                     <ul class="list-group list-group-flush">
                     {% for post in personalPosts %}
                         {% include 'pages/post.html' with post=post deletePost=True %}
-                        <!--
-                        <li style="border: none " class="list-group-item">
-                            <div class="post">
-                                <div class="row">
-                                    <div class="col-1 pr-1">
-                                    <a class="profileLink" href="{% url 'public_profile' post.profile.user.id %}">
-                                    {% if post.profile.photo %}
-                                        <img style="border-radius: 50%; width:50px;" src="{{post.profile.photo.url}}" />
-                                    {% else %}
-                                        <img style="border-radius: 50%; width:50px;" src="pages/media/profile_photos/default.jpg" />
-                                    {% endif %}
-                                    </a>
-                                    </div>
-                                    <div class="col-11 pl-1">
-                                        <div class="row" style="text-align:left">
-                                            <div class="col">
-                                                <a href="{% url 'public_profile' post.profile.user.id %}" style="color:blue">{{post.profile.user.first_name}}&nbsp;{{post.profile.user.last_name}}</a>
-                                            </div>
-                                            <div class="col" style="text-align:right">
-                                                <form style="margin:0" action="{% url 'feed' %}" method="post"> {% csrf_token %}
-                                                    <button class="btn btn-danger" style="padding:1px;" type="submit" name="deletePost" value="{{post.id}}">
-                                                        <i class="material-icons">clear</i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                            <div class="w-100"></div>
-                                            <div class="col">
-                                                <small class="text-muted">{{post.datePosted}}</small>
-                                            </div>
-                                            <div class="col">
-                                                
-                                            </div>
-                                        </div>
-                                        <div class="w-100"></div>
-                                    <p class="border-top" style="margin-top:0.5em; padding-top:0.5em; margin-bottom:0">{{post.postContent}}</p>
-                                    {% if post.picture %}
-                                        <img class="m-1" style="border-radius:2%; height:230px; width:230px; text-align:center" src="{{post.picture.url}}" />
-                                    {% endif %}
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        </li>
-                        -->
                     {% endfor %}
                     </ul>
                 </div>
             </div>
-            <!--code grabbed from: https://stackoverflow.com/questions/10523433/how-do-i-keep-the-current-tab-active-with-twitter-bootstrap-after-a-page-reload
-            being to used to maintain bootstrap tab position on page refresh -->
-            <script>
-                $(function () {
-                    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                        // save the latest tab; use cookies if you like 'em better:
-                        localStorage.setItem('lastTab', $(this).attr('href'));
-                    });
 
-                    // go to the latest tab, if it exists:
-                    var lastTab = localStorage.getItem('lastTab');
-                    if (lastTab) {
-                        $('[href="' + lastTab + '"]').tab('show');
-                    }
-                });
-            </script>
             {% if ig_media_urls %}
             <button type="button" class="btn btn-danger" style="margin-top:20px;width:100%" data-toggle="modal" data-target="#postModal">
                 Choose Instagram Image
@@ -273,20 +52,8 @@
         <div class="col"></div>
     </div>
 </div>
-    
-<script>
-    $(function(){
-        $('postToFeed').on('submit', function(e){
-            e.preventDefault();
-            $.ajax({
-                url: "/feed/",
-                type: "POST",
-                data: $("postToFeed").serialize(),
-                success: function(data){ }
-            });
-        }); 
-    });
-</script>
+   
+<!-- Post to feed form -->
 <div class="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
@@ -334,8 +101,37 @@
         </div>
     </div>
 </div> 
-<!-- Partial code from https://github.com/mdn/learning-area/blob/master/html/forms/file-examples/file-example.html -->
+
 <script>
+    /* !--code grabbed from: https://stackoverflow.com/a/10524697
+     * being to used to maintain bootstrap tab position on page refresh 
+     * */
+    $(function () {
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            // save the latest tab; use cookies if you like 'em better:
+            localStorage.setItem('lastTab', $(this).attr('href'));
+        });
+
+        // go to the latest tab, if it exists:
+        var lastTab = localStorage.getItem('lastTab');
+        if (lastTab) {
+            $('[href="' + lastTab + '"]').tab('show');
+        }
+    });
+
+    $(function(){
+        $('postToFeed').on('submit', function(e){
+            e.preventDefault();
+            $.ajax({
+                url: "/feed/",
+                type: "POST",
+                data: $("postToFeed").serialize(),
+                success: function(data){ }
+            });
+        }); 
+    });
+
+    /* Partial code from https://github.com/mdn/learning-area/blob/master/html/forms/file-examples/file-example.html */
     var cancel = document.getElementById("cancel");
     var pc_image = document.getElementById("pc_image");
     var preview = document.querySelector('.preview');
