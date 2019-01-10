@@ -62,7 +62,7 @@ class Post(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
-    commentContent = models.TextField()
+    commentContent = models.CharField(max_length=100)
     datePosted = models.DateTimeField(auto_now_add=True)
     is_deleted = models.BooleanField(default=False)
 
