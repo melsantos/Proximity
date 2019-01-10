@@ -13,7 +13,8 @@ class CommentForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['commentContent'].widget.attrs.update({'class':'form-control'},
                                                           rows="1",
-                                                          placeholder="Got something to say?")
+                                                          placeholder="Got something to say?",
+                                                          maxlength=100)
 
 class CustomWriteForm(WriteForm):
     def __init__(self, *args, **kwargs):
