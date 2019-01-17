@@ -1,48 +1,11 @@
 {% include 'pages/base.html' %}
-<style>
-.post {
-    width:100%;
-    padding-top:10px;
-    padding-bottom:5px;
-    padding-left:20px;
-    padding-right:20px;
-    background-color: white;
-    text-align:left;
-    overflow-wrap:break-word;
-    height:100px;
-}
-.speech-bubble {
-	    position: relative;
-	    background: #E8E8E8;
-}
-.speech-bubble:after {
-	content: '';
-	position: absolute;
-	left: 0;
-    top:0;
-	width: 0;
-	height: 0;
-	border: 10px solid transparent;
-	border-right-color: #E8E8E8;
-	border-left: 0;
-	border-top: 0;
-	margin-left: -10px;
-}
-    ::-webkit-scrollbar { 
-        width: 10px;
-    }
 
-    ::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px lightgray;
-        border-radius: 5px;
-        
-    }
+{% block extrahead %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'pages/css/feed.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'pages/css/hover.css' %}"/>
+{% endblock %}
 
-    ::-webkit-scrollbar-thumb {
-      background: lightgray; 
-      border-radius: 10px;
-    }
-</style>
 <div class="container py-3" style="height:100%">
 <div class="row h-100" >
     <div class="col"></div>
