@@ -98,11 +98,22 @@
                 <div class="modal-footer">   
                     {% if not ig_media_urls %}
                     <div class="col-sm-3">
-                        <label for="pc_image" id="pc_label"></label>
+                        <label for="pc_image" id="pc_label" style="background-image: url('../media/custom_icons/image_upload_icon.png');"></label>
                         <input type="file" id="pc_image" class="mr-auto" name="pc_image" accept="image/*">
                     </div>
                     <div class="col-sm-3 mr-auto">
-                        <a id ="ig_link" class="btn btn-danger" href={{instagram_auth}} role="button">Upload from Instagram</a>
+                        <a id ="ig_link" class="btn btn-danger" href={{instagram_auth}} role="button" style="
+                            background-image: url('../media/custom_icons/instagram_logo.png');
+                            background-position: center;
+                            background-repeat: no-repeat;
+                            background-size: cover;
+                            position: relative;
+                            width: 45px;
+                            height: 40px;
+                            float: left;
+                            margin-left:-88%;
+                            ">
+                         </a>
                     </div>
                     {% else %}
                     <!-- Instagram Pagination-->
@@ -138,9 +149,9 @@
     ig_media_urls.setAttribute('value', "{{ig_media_urls}}");
         
     var ig_page_number_display = document.getElementById("ig_page_number_display");
-    var number = parseInt(ig_page_number_display.innerHTML);
 
     function pageUp() {
+        var number = parseInt(ig_page_number_display.innerHTML);
         var limit = "{{ig_media_urls|length}}" / 5;
         if (number < limit) {
         	number = number + 1;
@@ -151,6 +162,7 @@
         }
     }
     function pageDown() {
+        var number = parseInt(ig_page_number_display.innerHTML);
         if (number > 1) {
         	number = number - 1;
             page_number.setAttribute("value", number.toString());
