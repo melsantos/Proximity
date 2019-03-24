@@ -56,7 +56,6 @@ def home(request):
 # Prevents anyone from accessing this page unless they are logged in to their account
 @login_required(login_url="home")
 def user_home_view(request):
-    # FIXME: Hide code from url and silently fail when someone enters a code in url
     def get_access_code(code):
         if code != None:
             url = 'https://api.instagram.com/oauth/access_token'
@@ -99,7 +98,7 @@ def user_home_view(request):
             p = Post.objects.get(pk = postid)
             p.picture.delete(save=True)
             p.delete()
-        else:   
+        elif not request.POST.get('page_number'):  
             igPicURL = request.POST.get('ig_media', None)
             myPost = request.POST.get('postContent', '')  
             myPic = request.FILES.get('pc_image', None)
@@ -136,8 +135,20 @@ def user_home_view(request):
     #myPosts
     personalPosts = list(Post.objects.filter(profile = myProfile).order_by('-datePosted'))
     # Instagram
-    code = request.GET.get('code',None)
-    media_urls = get_media(code)
+    ig_url_subset = []
+    if request.POST.get('page_number'):
+        ig_media_urls = request.POST.get('ig_media_urls').replace("&#39;", "")[1:-1].split(", ")
+        page_number = int(request.POST.get('page_number'))
+    else:
+        code = request.GET.get('code',None)
+        ig_media_urls = get_media(code)
+        page_number = 1      
+   
+    if ig_media_urls:
+        # Only display a subset of pictures for pagination
+        for i, url in enumerate(ig_media_urls):
+            if i in range ((page_number-1) * 5, page_number*5):
+                ig_url_subset.append(url)
     comment_form = CommentForm()
 
     return render(request, 'pages/user_home.html',
@@ -148,7 +159,9 @@ def user_home_view(request):
                         'nearbyPosts' : nearbyPosts,
                         'personalPosts' : personalPosts,
                         'instagram_auth':instagram_auth_url,
-                        'ig_media_urls' : media_urls,
+                        'ig_media_urls' : ig_media_urls,
+                        'ig_url_subset' : ig_url_subset,
+                        'ig_page_number' : page_number
                     }
                   )
 

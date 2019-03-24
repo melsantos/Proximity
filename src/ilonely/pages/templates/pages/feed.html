@@ -1,4 +1,22 @@
-﻿<div class="container-fluid" style="height:85%">
+﻿<!-- Pagination styling -->
+<style>
+    .pagination a {
+      color: black;
+      float:left;
+      padding: 8px 16px;
+      text-decoration: none;
+      transition: background-color .3s;
+    }
+
+    .pagination a.active {
+      background-color: dodgerblue;
+      color: white;
+    }
+
+    .pagination a:hover:not(.active) {background-color: #ddd;}
+</style>
+
+<div class="container-fluid" style="height:85%">
         <div class="h-100 mx-auto" style="width:900px;">
             <ul class="nav nav-pills nav-fill" role="tablist" id="feedTabs">
                 <li class="nav-item">
@@ -59,8 +77,8 @@
             <form id="postToFeed" action="{% url 'feed' %}" method="post" enctype="multipart/form-data"> {% csrf_token %}
                 <div class="modal-body">
                     <div class="preview form-group">
-                        {% if ig_media_urls %}
-                            {% for url in ig_media_urls %}
+                        {% if ig_url_subset %}
+                            {% for url in ig_url_subset %} 
                                 <iframe id ="ig_media" style="height:250px; width:250px" src="{{url}}" value="{{url}}" name="ig_media" frameborder="1" scrolling="no"></iframe>
                                 <label class="customRadio">
                                     <input type="radio" name="ig_media" value="{{url}}">
@@ -86,15 +104,62 @@
                     <div class="col-sm-3 mr-auto">
                         <a id ="ig_link" class="btn btn-danger" href={{instagram_auth}} role="button">Upload from Instagram</a>
                     </div>
+                    {% else %}
+                    <!-- Instagram Pagination-->
+                    <div class="pagination">
+                        <a href="#" onclick="pageDown()">&laquo;</a>
+                        <a class="active" href="#" id="ig_page_number_display">{{ig_page_number}}</a>  
+                        <a href="#" onclick="pageUp()">&raquo;</a>
+                    </div>
                     {% endif %}
                     <button type="button" id ="cancel" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-primary">Post</button>                   
                 </div>
             </form>
+            <form id="igPaginate" method="post" action="{% url 'feed' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+            </form>
         </div>
     </div>
 </div> 
+<!-- Instagram Pagination -->
+<script type="text/javascript">
+    var form = document.getElementById("igPaginate");
 
+    var page_number = document.createElement("input"); //input element, text
+    page_number.setAttribute('type',"hidden");
+    page_number.setAttribute('id',"page_number");
+    page_number.setAttribute('name',"page_number");
+    
+    var ig_media_urls = document.createElement("input"); //input element, text
+    ig_media_urls.setAttribute('type',"hidden");
+    ig_media_urls.setAttribute('id',"ig_media_urls");
+    ig_media_urls.setAttribute('name',"ig_media_urls");
+    ig_media_urls.setAttribute('value', "{{ig_media_urls}}");
+        
+    var ig_page_number_display = document.getElementById("ig_page_number_display");
+    var number = parseInt(ig_page_number_display.innerHTML);
+
+    function pageUp() {
+        var limit = "{{ig_media_urls|length}}" / 5;
+        if (number < limit) {
+        	number = number + 1;
+            page_number.setAttribute("value", number.toString());
+            form.appendChild(page_number);
+            form.appendChild(ig_media_urls);
+            form.submit();
+        }
+    }
+    function pageDown() {
+        if (number > 1) {
+        	number = number - 1;
+            page_number.setAttribute("value", number.toString());
+            form.appendChild(page_number);
+            form.appendChild(ig_media_urls);
+            form.submit();
+        }
+    }
+</script>
 <script>
     /* !--code grabbed from: https://stackoverflow.com/a/10524697
      * being to used to maintain bootstrap tab position on page refresh 
