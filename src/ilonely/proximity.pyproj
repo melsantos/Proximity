@@ -183,8 +183,10 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="entry\static\entry\img\google_sign_in.png" />
+    <Content Include="pages\static\pages\css\img\more-people-connecting.jpg" />
     <Content Include="pages\static\pages\css\img\people-connecting.jpg" />
     <Content Include="pages\static\pages\css\bootstrap\jquery-ui.min.css" />
+    <Content Include="pages\static\pages\css\profile_button.css" />
     <Content Include="pages\static\pages\js\popper.min.js" />
     <Content Include="pages\static\pages\js\datepair.js" />
     <Content Include="pages\templates\pages\account.html" />
@@ -192,6 +194,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="pages\templates\pages\events.html" />
+    <Content Include="pages\templates\pages\landing.html">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="pages\templates\pages\notification_badge.html" />
     <Content Include="pages\templates\pages\base.html" />
     <Content Include="pages\templates\pages\feed.html" />

@@ -1,0 +1,131 @@
+{% extends "pages/base.html"%}
+{% load static %}
+
+{% block extrahead %}
+
+    <link href="https://fonts.googleapis.com/css?family=Gentium+Book+Basic|Heebo" rel="stylesheet">
+    <style>
+    body {
+        height: 90vh;
+    }
+
+    .container {
+        font-family: 'Gentium Book Basic', serif;
+        display: grid;
+        grid-template-rows: 10% 30% auto 30% 10% 10%;
+        grid-template-columns: 40% 8% auto 8% 40%;
+        height: 90%;
+        padding-top: 5%;
+    }
+
+    .container > div {
+
+    }
+
+    .headline1 {
+        grid-column-start: 1;
+        grid-column-end: 3;
+        grid-row-start: 2;
+        grid-row-end: 3;
+    }
+
+    .pic1 {
+        grid-column-start: 4;
+        grid-column-end: 6;
+        grid-row-start: 1;
+        grid-row-end: 4;
+        background-color: blueviolet;
+        background-image: url("{% static 'pages/css/img/people-connecting.jpg' %}");
+        background-size: cover;
+    }
+
+    .headline2 {
+        padding-top: 10px;
+        grid-column-start: 4;
+        grid-column-end: 6;
+        grid-row-start: 4;
+        grid-row-end: 5;
+    }
+
+    .pic2 {
+        grid-column-start: 1;
+        grid-column-end: 3;
+        grid-row-start: 3;
+        grid-row-end: 6;
+        background-color: blueviolet;
+        background-image: url("{% static 'pages/css/img/more-people-connecting.jpg' %}");
+        background-size: cover;
+    }
+
+    .getStarted {
+        grid-column-start: 5;
+        grid-column-end: 6;
+        grid-row-start: 5;
+        grid-row-end: 6;
+        text-align: center;
+    }
+
+    .footer {
+        grid-column-start: 1;
+        grid-column-end: 6;
+        grid-row-start: 6;
+        grid-row-end: 7;
+        font-size:2em;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .getStartedButton {
+        background-color: #004d40;
+        width: 70%;
+        height: 90%;
+        border-radius: 10px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        font-size:2em;
+        font-family: 'Heebo', sans-serif;
+        color: white;
+        margin:auto;
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="headline1" style="text-align:right">
+            <div style="margin:0; font-size: 70pt;">Proximity</div>
+            <div>
+                {% lorem 13 w random %}
+            </div>
+        </div>
+        <div class="pic1"></div>
+        <div class="headline2" style="text-align:left">
+            <div style="margin:0; font-size: 30pt; line-height:1em">
+                {% lorem 5 w random %}
+            </div>
+            <div>
+                {% lorem 13 w random %}
+            </div>
+        </div>
+        <div class="pic2"></div>
+        <div class="getStarted">
+            <div class="w-100 h-100" style="display:inline-block">
+                <a href="{% url 'register' %}" style="text-decoration:none">
+                    <div class="getStartedButton">
+                        Get Started
+                    </div>
+                </a>
+                <small class="height: 10%">
+                    Already have an account? <a href="{% url 'login' %}">Log in.</a>
+                </small>
+            </div>
+        </div>
+        <div class="footer">
+            Connect. Discover. Heck.
+        </div>
+    </div>
+{% endblock %}

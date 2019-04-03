@@ -47,7 +47,7 @@ def home(request):
 
     return render(
         request,
-        'pages/home.html',
+        'pages/launch.html',
         {
             'title':'Home',
         }
@@ -184,7 +184,7 @@ def delete_comment(request):
 
 def post_comment(request):
     me = User.objects.get(pk=request.user.id)
-    myProfile = Profile.objects.get(user = me)    
+    myProfile = Profile.objects.get(user = me)
 
     if request.method == 'POST':
         comment_form = CommentForm(request.POST)

@@ -2,24 +2,16 @@
 {% load leaflet_tags %}
 
 {% block extrahead %}
-<style>
-#profileButton {
-    cursor: pointer;
-    width: 400px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    padding-left: 20px;
-    border: none;
-    background-color: #f2f2f2;
-    box-shadow: 3px 3px 3px #cecece;
-}
+{% load static %}
 
+
+<style>
 #filters {
     text-align:center;
     height: 120px;
 }
 
-.leaflet-container {  /* all maps */
+.leaflet-container {
     width:  100%;
     height: 100%;
     border-radius:5px;
@@ -31,61 +23,36 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0; 
 }
 
-::-webkit-scrollbar { 
-    display: none; 
+::-webkit-scrollbar {
+    width: 10px;
 }
 
-body {
-    padding-top:26px;
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px lightgray;
+    border-radius: 5px;
 }
 
-.hvr-underline-reveal {
-  display: inline-block;
-  vertical-align: middle;
-  -webkit-transform: perspective(1px) translateZ(0);
-  transform: perspective(1px) translateZ(0);
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
-  position: relative;
-  overflow: hidden;
-}
-.hvr-underline-reveal:before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: #2098D1;
-  height: 4px;
-  -webkit-transform: translateY(4px);
-  transform: translateY(4px);
-  -webkit-transition-property: transform;
-  transition-property: transform;
-  -webkit-transition-duration: 0.3s;
-  transition-duration: 0.3s;
-  -webkit-transition-timing-function: ease-out;
-  transition-timing-function: ease-out;
-}
-.hvr-underline-reveal:hover:before, .hvr-underline-reveal:focus:before, .hvr-underline-reveal:active:before {
-  -webkit-transform: translateY(0);
-  transform: translateY(0);
+::-webkit-scrollbar-thumb {
+    background: lightgray;
+    border-radius: 10px;
 }
 </style>
+
+<link rel="stylesheet" type="text/css" href="{% static 'pages/css/profile_button.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'pages/css/hover.css' %}">
 
 {% leaflet_js %}
 {% leaflet_css %}
 
-<!-- Javascript for filtering nearby people -->
-<script src="static/js/extras.js"></script>
 {% endblock %}
 
 {% block content %}
 
 <div class="container-fluid">
-    <div class="p-2 mb-3 row bg-dark" id="filters" style="height:15%; display:flex; align-items:center; border-bottom:5px solid lightgray;">
+    <div class="p-2 mb-3 row" id="filters" style="height:15%; display:flex; align-items:center; border-bottom:5px solid lightgray;">
         <div class="col"></div>
         <div class="col-10">
-        <h2 class="text-white">Nearby in {{request.user.profile.location}}</h2>
+        <h2>Nearby in {{request.user.profile.location}}</h2>
             <div class="nav btn-toolbar justify-content-center">
                 <form method="GET">
                     <!-- Filter nearby users by miles -->
@@ -126,7 +93,6 @@ body {
         <div class="col"></div>
     </div>
 
-
     <div class="row" style="height:80%">
         <div class="col-3-auto pl-3">
             <div class="h-100">
@@ -135,7 +101,7 @@ body {
                     <ul class="list-group list-group-flush" id="profiles">
                     {% for person, distance in people %}
                         <li style="border: none;" class="list-group-item">             
-                            <button type="submit" name="viewUser" id="profileButton" value="{{person.user.id}}" class="hvr-underline-reveal">
+                            <button type="submit" name="viewUser" value="{{person.user.id}}" class="hvr-underline-reveal profileButton">
                                 {% if person.photo %}
                                     <img style="border-radius: 50%; width:55px; float:left; margin:2px;" src="{{person.photo.url}}" />
                                 {% endif %}
@@ -146,6 +112,7 @@ body {
                             <p class="lat" hidden>{{person.latitude}}</p>
                             <p class="long" hidden>{{person.longitude}}</p>
                             <p class="userIDs" hidden>{% url 'public_profile' person.user.id %}</p>
+                            <p class="profileURLs" hidden>{{person.photo.url}}</p>
                         </li>
                     {% endfor %}
                     </ul>
@@ -162,7 +129,7 @@ body {
 <!-- Leaflet map script-->
 <script type="text/javascript">
     var greenIcon = L.icon({
-        iconUrl: 'media/custom_icons/person_pin.png',
+        iconUrl: 'media/custom_icons/person_pin.png', // change this?? its kind of ugly
         iconSize:     [48, 48], // size of the icon
         iconAnchor:   [22, 48], // point of the icon which will correspond to marker's location
         popupAnchor:  [2, -40] // point from which the popup should open relative to the iconAnchor
@@ -191,16 +158,31 @@ body {
         longs = document.getElementsByClassName("long");
         names = document.getElementsByClassName("personName");
         ids = document.getElementsByClassName("userIDs")
+        photos = document.getElementsByClassName("profileURLs")
+
+        var popUpOptions = {
+          'minWidth': '100',
+        }
+
         for (i = 0; i < lats.length; i++) {
             lat = lats[i].innerHTML;
             long = longs[i].innerHTML;
             name = names[i].innerHTML;
             id = ids[i].innerHTML
-            L.marker([parseFloat(lat), parseFloat(long)], {riseOnHover:'True'}).addTo(map).bindPopup("<a href=\"" + id + "\"><b>"+name.toString()+"</b></a>"); 
+            picURL = photos[i].innerHTML;
+            
+            L.marker([parseFloat(lat), parseFloat(long)], {riseOnHover:'True'})
+             .addTo(map)
+             .bindPopup(
+                 "<img style=\"border-radius: 50%; width:35px; margin:3px;\" src =\"" + picURL + "\">" + 
+                 "<a href=\"" + id + "\"><b>"+name.toString()+"</b></a>",
+                 popUpOptions
+               ); 
         }
     }
 </script>
 
+<!-- Script for making age text input match age slider input -->
 <script>
     var slider = document.getElementById("ageSlider");
     var output = document.getElementById("ageOutput");

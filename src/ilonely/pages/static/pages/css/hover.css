@@ -120,17 +120,17 @@
     transition-property: transform;
 }
 
-    .hvr-forward:hover, .hvr-forward:focus, .hvr-forward:active {
-        -webkit-transform: translateX(8px);
-        transform: translateX(8px);
-    }
+.hvr-forward:hover, .hvr-forward:focus, .hvr-forward:active {
+    -webkit-transform: translateX(8px);
+    transform: translateX(8px);
+}
 
 .hvr-underline-reveal {
     display: inline-block;
     vertical-align: middle;
     -webkit-transform: perspective(1px) translateZ(0);
     transform: perspective(1px) translateZ(0);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    /*box-shadow: 0 0 1px rgba(0, 0, 0, 0);*/
     position: relative;
     overflow: hidden;
 }
