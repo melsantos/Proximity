@@ -47,7 +47,7 @@ def home(request):
 
     return render(
         request,
-        'pages/launch.html',
+        'pages/landing.html',
         {
             'title':'Home',
         }
